@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/logo.png" alt="MithenOS banner" width="900">
+  <img src="img/logo.png" alt="MithenOS banner">
 </p>
 
 <h1 align="center">MithenOS</h1>
