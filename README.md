@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="images/github-banner.png" alt="MithenOS banner" width="900">
+  <img src="img/logo.png" alt="MithenOS banner" width="900">
 </p>
 
 <h1 align="center">MithenOS</h1>
 
 <div align="center">
-MithenOS is a lightweight, privacy and performance focused customization of Windows 10 and 11, applied as an <a href="https://amelabs.net">AME Wizard</a> playbook. It is a fork of <a href="https://github.com/meetrevision/playbook">ReviOS</a>, combined with selected tweaks from <a href="https://github.com/Atlas-OS/Atlas">AtlasOS</a> and <a href="https://github.com/ChrisTitusTech/winutil">ChrisTitusTech's WinUtil</a>.
+MithenOS is a lightweight, privacy and performance focused customization of Windows 10 and 11, applied as an <a href="https://amelabs.net">AME Wizard</a> playbook. It is a fork of <a href="https://github.com/meetrevision/playbook">ReviOS</a>, combined with tweaks from <a href="https://github.com/Atlas-OS/Atlas">AtlasOS</a> and <a href="https://github.com/ChrisTitusTech/winutil">ChrisTitusTech's WinUtil</a>.
 </div>
 
 ## Features
@@ -20,9 +20,6 @@ MithenOS is a lightweight, privacy and performance focused customization of Wind
 * Removes the Microsoft Store automatically on LTSC editions.
 * Installs the Mithen apps (MithenView, MithenPDF, MithenPlayer, MithenZip) and the Mithen-Tool with its System Monitor tab.
 * Desktop and lock screen are set to plain black.
-
-## Screenshot
-![MithenOS banner](images/github-banner.png)
 
 ## Supported platforms
 * Windows 10 21H2 `19044` and 22H2 `19045` (AMD64, ARM64)
