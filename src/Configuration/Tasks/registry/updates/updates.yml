@@ -9,20 +9,32 @@ actions:
   # === Windows Update ===
   # ======================
 
+  # === Windows Update - WinUtil "Recommended" profile
+  # ------> Defer feature updates 365 days, defer quality updates 4 days,
+  # ------> exclude drivers from quality updates, and notify when downloaded
+  # ------> updates are ready to install.
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate', value: 'DeferFeatureUpdates', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate', value: 'DeferFeatureUpdatesPeriodInDays', type: REG_DWORD, data: '365'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate', value: 'DeferQualityUpdates', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate', value: 'DeferQualityUpdatesPeriodInDays', type: REG_DWORD, data: '4'}
 
-  # === Configure Automatic Updates - Disabled
-  # ------> NOTE: Used to break Xbox Sign-in in older Windows 10 versions
-  # - !registryValue: {path: 'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU', value: 'NoAutoUpdate', type: REG_DWORD, data: '1'}
+  # === Automatic Updates - download and notify before installing (AUOptions 3)
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU', value: 'AUOptions', type: REG_DWORD, data: '3'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU', value: 'AUPowerManagement', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU', value: 'NoAutoUpdate', operation: delete}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU', value: 'NoAutoRebootWithLoggedOnUsers', operation: delete}
 
-  # === Pause Windows Updates to 2038 January 19
-  # === FlightSettingsMaxPauseDays is responsible for the rest regs to work
-  - !run:
-    path: "%ProgramFiles%\\Revision Tool"
-    exe: "revitool.exe"
-    args: "tweaks updates wu-pause-updates enable"
-    wait: true
-    runas: currentUserElevated
-  
+  # === Legacy update UX settings - removed when using the policy above
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings', value: 'BranchReadinessLevel', operation: delete}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings', value: 'DeferFeatureUpdatesPeriodInDays', operation: delete}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings', value: 'DeferQualityUpdatesPeriodInDays', operation: delete}
+
+  # === Update services
+  # ------> WinUtil sets BITS and wuauserv to Manual and keeps UsoSvc Automatic
+  - !service: {name: 'BITS', operation: change, startup: 3}
+  - !service: {name: 'wuauserv', operation: change, startup: 3}
+  - !service: {name: 'UsoSvc', operation: change, startup: 2}
+
   # === Windows Update Notifications - Disabled
   # ------> https://www.askvg.com/fix-how-to-stop-automatic-forced-upgrade-to-feature-updates-in-windows-10/
   - !registryValue: {path: 'HKLM\SYSTEM\Setup\UpgradeNotification', value: 'UpgradeAvailable', type: REG_DWORD, data: '0'}

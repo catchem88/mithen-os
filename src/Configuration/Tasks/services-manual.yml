@@ -1,0 +1,19 @@
+---
+title: Services to Manual
+description: Applies the WinUtil "Services - Set to Manual" service configuration
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Configuring services to manual"}
+
+  # === Offline Files - Disabled
+  - !service: {name: 'CscService', operation: change, startup: 4}
+
+  # === Internet Connection Sharing (ICS) - Disabled
+  - !service: {name: 'SharedAccess', operation: change, startup: 4}
+
+  # === Downloaded Maps Manager - Manual
+  - !service: {name: 'MapsBroker', operation: change, startup: 3}
+
+  # === Storage Service - Manual
+  - !service: {name: 'StorSvc', operation: change, startup: 3}

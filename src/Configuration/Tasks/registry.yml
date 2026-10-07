@@ -1,6 +1,6 @@
 ---
 title: Registry
-description: Revision registry configuration
+description: Mithen registry configuration
 privilege: TrustedInstaller
 actions: 
   - !writeStatus: {status: "Tweaking registry"}
@@ -21,7 +21,10 @@ actions:
   - !task: {path: 'Tasks\registry\explorer\taskbar.yml'}
   - !task: {path: 'Tasks\registry\explorer\view.yml'}
   - !task: {path: 'Tasks\registry\explorer\win-settings.yml'} 
-
+
+  - !task: {path: 'Tasks\registry\explorer\visual-effects.yml'}
+  - !task: {path: 'Tasks\registry\explorer\window-snapping.yml'}
+  - !task: {path: 'Tasks\registry\explorer\explorer-auto-folder-discovery.yml'}
   # Privacy
   - !writeStatus: {status: "Configuring Privacy"}
   - !task: {path: 'Tasks\registry\privacy\privacy.yml'}
@@ -31,7 +34,9 @@ actions:
   - !task: {path: 'Tasks\registry\privacy\cloud-content.yml'}
   - !task: {path: 'Tasks\registry\privacy\telemetry.yml'}
   - !task: {path: 'Tasks\registry\privacy\wer.yml'}
-
+
+  - !task: {path: 'Tasks\registry\privacy\edge-debloat.yml'}
+  - !task: {path: 'Tasks\registry\privacy\store-recommended-search.yml'}
   # Security
   - !writeStatus: {status: "Configuring Security"}
   - !task: {path: 'Tasks\registry\security\security.yml'}
@@ -50,7 +55,12 @@ actions:
   - !task: {path: 'Tasks\registry\system\oobe.yml'}
   - !task: {path: 'Tasks\registry\system\power.yml'}
   - !task: {path: 'Tasks\registry\system\win32ps.yml'}
-
+
+  - !task: {path: 'Tasks\registry\system\ipv6.yml'}
+  - !task: {path: 'Tasks\registry\system\long-paths.yml'}
+  - !task: {path: 'Tasks\registry\system\numlock.yml'}
+  - !task: {path: 'Tasks\registry\system\game-mode.yml'}
+  - !task: {path: 'Tasks\registry\system\mpo.yml'}
   # Updates
   - !writeStatus: {status: "Configuring Updates"}
   - !task: {path: 'Tasks\registry\updates\updates.yml'}
@@ -66,3 +76,6 @@ actions:
   - !task: {path: 'Tasks\registry\misc\fixes.yml'}
   - !task: {path: 'Tasks\registry\misc\msi-installer-in-safe-mode.yml'}
 
+
+  - !task: {path: 'Tasks\registry\misc\logitech-download-assistant.yml'}
+  - !task: {path: 'Tasks\registry\misc\mithen-view-associations.yml'}

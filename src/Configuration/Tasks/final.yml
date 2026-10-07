@@ -1,19 +1,19 @@
 ---
 title: Configuration
-description: Applies some Revision configurations
+description: Applies some Mithen configurations
 privilege: TrustedInstaller
 actions:
 
   - !writeStatus: {status: "Optimizing NTFS"}
   - !run:
-    path: "%ProgramFiles%\\Revision Tool"
-    exe: "revitool.exe"
+    path: "%ProgramFiles%\\Mithen-Tool"
+    exe: "mithentool.exe"
     args: "tweaks performance ntfs-last-access disable"
     wait: true
     runas: currentUserElevated
   - !run:
-    path: "%ProgramFiles%\\Revision Tool"
-    exe: "revitool.exe"
+    path: "%ProgramFiles%\\Mithen-Tool"
+    exe: "mithentool.exe"
     args: "tweaks performance ntfs-8dot3-naming disable"
     wait: true
     runas: currentUserElevated
@@ -47,8 +47,8 @@ actions:
 
   # Alternative way to group services without breaking services like XboxGipSvc
   - !run:
-    path: "%ProgramFiles%\\Revision Tool"
-    exe: "revitool.exe"
+    path: "%ProgramFiles%\\Mithen-Tool"
+    exe: "mithentool.exe"
     args: "tweaks performance service-grouping set recommended"
     wait: true
     runas: currentUserElevated
@@ -68,32 +68,23 @@ actions:
     option: "remove-appx-photos"
     weight: 150
 
-  - !cmd:
+  # Mithen associations run after the photos fallback; FILEASSOC.cmd picks the ProgIds at runtime
+  - !run:
     exeDir: true
-    command: 'robocopy "Wallpapers" "%systemroot%\Web\Wallpaper\MeetRevision\v2" /E /PURGE /IM /IT /NP'
-    ignoreErrors: true
+    exe: "FILEASSOC.cmd"
+    args: "mithen"
+    option: "install-mithen-apps"
+    weight: 160
 
+  # === Solid black desktop and lock screen (no wallpaper images are shipped)
   - !powerShell:
-    command: '.\WALLPAPER.ps1 -Mode Desktop -ImagePath $env:systemroot\Web\Wallpaper\MeetRevision\v2\desktop.jpg'
+    command: '.\BLACKSCREEN.ps1'
     exeDir: true
     runas: currentUserElevated
     option: "configure-wallpaper"
-    weight: 45
-
-  - !powerShell: 
-    command: '.\WALLPAPER.ps1 -Mode LockScreen -ImagePath $env:systemroot\Web\Wallpaper\MeetRevision\v2\lockscreen.jpg'
-    exeDir: true
-    runas: currentUserElevated
-    option: "configure-wallpaper"
-    weight: 45
 
   - !powerShell:
-    command: 'Copy-Item -Path .\WALLPAPER.ps1 -Destination "$env:systemroot\Web\Wallpaper\MeetRevision" -Force'
-    exeDir: true
-    option: "configure-wallpaper"
-  
-  - !powerShell:
-    command: 'Copy-Item -Path .\WallpaperStartup.cmd -Destination "$env:systemroot\Web\Wallpaper\MeetRevision" -Force'
+    command: 'New-Item -ItemType Directory -Force -Path "$env:systemroot\Web\Wallpaper\MithenOS" | Out-Null; Copy-Item -Path .\BLACKSCREEN.ps1 -Destination "$env:systemroot\Web\Wallpaper\MithenOS" -Force'
     exeDir: true
     option: "configure-wallpaper"
 
@@ -107,14 +98,14 @@ actions:
     options: ["configure-darkmode"]
 
   - !powerShell:
-    command: ".\\Set-Theme.ps1 -New @{ WallpaperPath = (Join-Path $env:SystemRoot 'Web\\Wallpaper\\MeetRevision\\v2\\desktop.jpg'); ThemeExportPath = (Join-Path $env:SystemRoot 'Resources\\Themes\\revi.theme'); SystemMode = 'Light'; AppMode = 'Light' }"
+    command: ".\\Set-Theme.ps1 -New @{ WallpaperPath = (Join-Path $env:SystemRoot 'Web\\Wallpaper\\MithenOS\\black.jpg'); ThemeExportPath = (Join-Path $env:SystemRoot 'Resources\\Themes\\mithen.theme'); SystemMode = 'Light'; AppMode = 'Light' }"
     exeDir: true
     runas: currentUserElevated
     option: "!configure-darkmode"
     options: ["configure-wallpaper"]
 
   - !powerShell:
-    command: ".\\Set-Theme.ps1 -New @{ WallpaperPath = (Join-Path $env:SystemRoot 'Web\\Wallpaper\\MeetRevision\\v2\\desktop.jpg'); ThemeExportPath = (Join-Path $env:SystemRoot 'Resources\\Themes\\revi.theme'); SystemMode = 'Dark'; AppMode = 'Dark' }"
+    command: ".\\Set-Theme.ps1 -New @{ WallpaperPath = (Join-Path $env:SystemRoot 'Web\\Wallpaper\\MithenOS\\black.jpg'); ThemeExportPath = (Join-Path $env:SystemRoot 'Resources\\Themes\\mithen.theme'); SystemMode = 'Dark'; AppMode = 'Dark' }"
     exeDir: true
     runas: currentUserElevated
     option: "configure-darkmode"
@@ -131,10 +122,10 @@ actions:
 
   - !registryValue: 
     path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce'
-    value: 'RevisionWallpaperStartup'
+    value: 'MithenBlackScreen'
     type: REG_SZ
     oobe: only
-    data: 'cmd /c "%SystemRoot%\Web\Wallpaper\MeetRevision\WallpaperStartup.cmd"'
+    data: 'powershell -NoP -ExecutionPolicy Bypass -File "%SystemRoot%\Web\Wallpaper\MithenOS\BLACKSCREEN.ps1"'
     option: "configure-wallpaper"
     
   # Necessary to refresh start menu entries etc.
@@ -147,10 +138,10 @@ actions:
   - !run: 
     exe: "gpupdate.exe"
 
-  # Apply micro patches via Revision Tool in order to avoid new playbook releases for minor changes
+  # Apply micro patches via Mithen-Tool in order to avoid new playbook releases for minor changes
   - !run:
-    path: "%ProgramFiles%\\Revision Tool"
-    exe: "revitool.exe"
+    path: "%ProgramFiles%\\Mithen-Tool"
+    exe: "mithentool.exe"
     args: "tweaks patches"
     wait: true
     runas: currentUserElevated

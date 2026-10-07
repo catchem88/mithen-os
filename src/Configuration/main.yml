@@ -1,6 +1,6 @@
 ---
 title: Custom
-description: Custom Revision configuration
+description: Custom Mithen configuration
 privilege: Admin
 actions:
   
@@ -28,7 +28,9 @@ actions:
   - !taskKill: {name: "Widgets", errorAction: Ignore}
 
   - !task: {path: 'Tasks\software.yml'}
+  - !task: {path: 'Tasks\software-mithen.yml'}
   - !task: {path: 'Tasks\services.yml'}
+  - !task: {path: 'Tasks\services-manual.yml'}
   
   - !task: {path: 'Tasks\registry.yml'}
   - !task: {path: 'Tasks\revert.yml'}

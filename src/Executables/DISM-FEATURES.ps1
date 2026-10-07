@@ -4,6 +4,12 @@ function Update-Feature {
         [bool]$bool
     )
     
+    $feature = Get-WindowsOptionalFeature -Online -FeatureName $featureName -ErrorAction SilentlyContinue
+    if ($null -eq $feature) {
+        Write-Host "Skipping $featureName (not available on this system)"
+        return
+    }
+
     $regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Notifications\OptionalFeatures"
     $regKey = Get-ItemProperty -Path "$regPath\$featureName" -ErrorAction SilentlyContinue
 	
@@ -28,9 +34,26 @@ $features = @(
     @{ Name = "MSRDC-Infrastructure"; Bool = $false },
     @{ Name = "Printing-Foundation-Features"; Bool = $false },
     @{ Name = "Printing-Foundation-InternetPrinting-Client"; Bool = $false },
-    @{ Name = "WorkFolders-Client"; Bool = $false }
+    @{ Name = "WorkFolders-Client"; Bool = $false },
+    @{ Name = "Printing-XPSServices-Features"; Bool = $false },
+    @{ Name = "WindowsMediaPlayer"; Bool = $false },
+    @{ Name = "MediaPlayback"; Bool = $false },
+    @{ Name = "FaxServicesClientPackage"; Bool = $false }
 	# @{ Name = "SmbDirect"; Bool = $false }
 )
 foreach ($feature in $features) {
     Update-Feature -featureName $feature.Name -bool $feature.Bool
+}
+
+# Remove XPS Viewer and Fax and Scan capabilities
+$capabilities = @(
+    "XPS.Viewer~~~~0.0.1.0",
+    "Print.Fax.Scan~~~~0.0.1.0"
+)
+foreach ($capability in $capabilities) {
+    $state = Get-WindowsCapability -Online -Name $capability -ErrorAction SilentlyContinue
+    if ($state -and $state.State -ne "NotPresent") {
+        Write-Host "Removing $capability"
+        Remove-WindowsCapability -Online -Name $capability -NoRestart | Out-Null
+    }
 }

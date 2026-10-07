@@ -1,0 +1,55 @@
+---
+title: MithenView Associations
+description: Registers MithenView as an image viewer so images can default to it
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Registering MithenView file associations", option: "install-mithen-apps"}
+
+  # === MithenView image ProgId (the app itself registers no file associations)
+  - !registryKey: {path: 'HKLM\SOFTWARE\Classes\MithenView.Image', operation: add, option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\MithenView.Image', value: '', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\MithenView.Image\DefaultIcon', value: '', type: REG_EXPAND_SZ, data: '%ProgramFiles%\MithenView\mithen-view.exe,0', option: "install-mithen-apps"}
+  - !registryKey: {path: 'HKLM\SOFTWARE\Classes\MithenView.Image\shell\open\command', operation: add, option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\MithenView.Image\shell\open\command', value: '', type: REG_EXPAND_SZ, data: '"%ProgramFiles%\MithenView\mithen-view.exe" "%1"', option: "install-mithen-apps"}
+
+  # === Default apps registration
+  - !registryValue: {path: 'HKLM\SOFTWARE\RegisteredApplications', value: 'MithenView', type: REG_SZ, data: 'Software\MithenView\Capabilities', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities', value: 'ApplicationName', type: REG_SZ, data: 'MithenView', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities', value: 'ApplicationDescription', type: REG_SZ, data: 'MithenView is an image viewer.', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities', value: 'ApplicationIcon', type: REG_EXPAND_SZ, data: '"%ProgramFiles%\MithenView\mithen-view.exe",0', option: "install-mithen-apps"}
+
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.jpg', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.jpeg', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.jfif', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.jpe', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.png', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.gif', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.bmp', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.dib', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.webp', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.ico', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.tif', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.tiff', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.svg', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.avif', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.heic', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.heif', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.jxl', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.jxr', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.wdp', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.tga', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\MithenView\Capabilities\FileAssociations', value: '.jp2', type: REG_SZ, data: 'MithenView.Image', option: "install-mithen-apps"}
+
+  # === Open with MithenView
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.jpg\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.jpeg\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.png\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.gif\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.bmp\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.webp\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.tif\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.tiff\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.svg\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.avif\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Classes\.ico\OpenWithProgids', value: 'MithenView.Image', type: REG_SZ, data: '', option: "install-mithen-apps"}

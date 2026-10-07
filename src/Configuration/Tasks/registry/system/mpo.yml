@@ -1,0 +1,9 @@
+---
+title: Multiplane Overlay
+description: Keeps Multiplane Overlay enabled
+privilege: TrustedInstaller
+actions:
+
+  # === Multiplane Overlay - Enabled
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\Dwm', value: 'OverlayTestMode', operation: delete}
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\GraphicsDrivers', value: 'DisableOverlays', operation: delete}

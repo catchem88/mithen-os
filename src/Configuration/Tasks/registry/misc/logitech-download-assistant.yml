@@ -1,0 +1,22 @@
+---
+title: Logitech Download Assistant
+description: Blocks the Logitech Download Assistant that Windows Update keeps reinstalling
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Blocking Logitech Download Assistant"}
+
+  - !powerShell:
+    exeDir: true
+    errorAction: Ignore
+    weight: 10
+    command: >-
+      Stop-Process -Name 'logi_download_assistant' -Force -ErrorAction SilentlyContinue;
+      $programFiles64 = if ($env:ProgramW6432) { $env:ProgramW6432 } else { $env:ProgramFiles };
+      $logiPath = Join-Path $programFiles64 'LogiDownloadAssistant';
+      if (Test-Path -LiteralPath $logiPath) {
+        Remove-Item (Join-Path $logiPath '*') -Recurse -Force -ErrorAction SilentlyContinue;
+      } else {
+        New-Item -Path $logiPath -ItemType Directory -Force | Out-Null;
+      }
+      icacls $logiPath /deny '*S-1-1-0:(W)' | Out-Null

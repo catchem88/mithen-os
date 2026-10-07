@@ -1,0 +1,23 @@
+---
+title: Microsoft Store Recommended Search Results
+description: Prevents recommended Microsoft Store apps from appearing in Start menu search
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Disabling Store recommended search results"}
+
+  - !powerShell:
+    exeDir: true
+    errorAction: Ignore
+    weight: 10
+    command: >-
+      $paths = @();
+      if ($env:LOCALAPPDATA) { $paths += (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsStore_8wekyb3d8bbwe\LocalState\store.db') }
+      Get-ChildItem 'C:\Users' -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+        $paths += (Join-Path $_.FullName 'AppData\Local\Packages\Microsoft.WindowsStore_8wekyb3d8bbwe\LocalState\store.db')
+      }
+      foreach ($db in ($paths | Select-Object -Unique)) {
+        if (Test-Path -LiteralPath $db) {
+          icacls $db /deny '*S-1-1-0:F' | Out-Null
+        }
+      }

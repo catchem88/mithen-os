@@ -1,0 +1,20 @@
+---
+title: Disable IPv6
+description: Disables IPv6 and prefers IPv4
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Disabling IPv6"}
+
+  # === IPv6 - Set IPv4 as Preferred (0x20)
+  # - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters', value: 'DisabledComponents', type: REG_DWORD, data: '32'}
+
+  # === IPv6 - Disabled (0xFF)
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters', value: 'DisabledComponents', type: REG_DWORD, data: '255'}
+
+  - !powerShell:
+    exeDir: true
+    errorAction: Ignore
+    weight: 10
+    command: >-
+      Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6 -ErrorAction SilentlyContinue

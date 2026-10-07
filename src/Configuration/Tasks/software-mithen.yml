@@ -1,0 +1,16 @@
+---
+title: Mithen Apps
+description: Installs the Mithen apps (View, PDF, Player, Zip)
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: 'Installing Mithen apps', option: "install-mithen-apps"}
+
+  - !run:
+    option: "install-mithen-apps"
+    exeDir: true
+    exe: "PowerShell"
+    args: '-NoP -ExecutionPolicy Bypass -File MITHENAPPS.ps1'
+    wait: true
+    errorAction: Ignore
+    weight: 150

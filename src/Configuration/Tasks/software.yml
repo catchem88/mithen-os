@@ -4,7 +4,7 @@ description: Installs preferred software
 privilege: TrustedInstaller
 actions:
 
-  # https://github.com/meetrevision/playbook/issues/81
+  # https://github.com/catchem88/mithen-os/issues/81
   # - !status: {status: 'Updating Winget'}
   # - !powerShell:
   #   weight: 50

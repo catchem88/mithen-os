@@ -1,0 +1,23 @@
+---
+title: File Explorer Automatic Folder Discovery
+description: Disables File Explorer automatic folder type discovery
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Disabling Explorer automatic folder discovery"}
+
+  - !powerShell:
+    exeDir: true
+    errorAction: Ignore
+    weight: 10
+    command: >-
+      $hives = @('HKCU', 'Registry::HKEY_USERS\.DEFAULT');
+      foreach ($hive in $hives) {
+        $bags = "$hive\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags";
+        $bagMRU = "$hive\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\BagMRU";
+        $allFolders = "$hive\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell";
+        Remove-Item -Path $bags -Recurse -Force -ErrorAction SilentlyContinue;
+        Remove-Item -Path $bagMRU -Recurse -Force -ErrorAction SilentlyContinue;
+        if (-not (Test-Path -LiteralPath $allFolders)) { New-Item -Path $allFolders -Force | Out-Null }
+        New-ItemProperty -Path $allFolders -Name 'FolderType' -Value 'NotSpecified' -PropertyType String -Force | Out-Null;
+      }

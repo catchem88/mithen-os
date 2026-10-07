@@ -1,0 +1,45 @@
+---
+title: Visual Effects
+description: Custom visual effects configuration (thumbnails, smooth fonts and icon label shadows kept; animations off)
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Configuring visual effects"}
+
+  # === Keep: Show thumbnails instead of icons / drop shadows for icon labels / smooth edges of fonts
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'IconsOnly', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'ListviewShadow', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'FontSmoothing', type: REG_SZ, data: '2'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'FontSmoothingType', type: REG_DWORD, data: '2'}
+
+  # === Animations and other effects - off
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'ListviewAlphaSelect', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'MinAnimate', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'DragFullWindows', type: REG_SZ, data: '0'}
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'MenuShowDelay', type: REG_SZ, data: '200'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\DWM', value: 'EnableAeroPeek', type: REG_DWORD, data: '0'}
+
+  # === Custom visual effects mode
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects', value: 'VisualFXSetting', type: REG_DWORD, data: '3'}
+
+  # === New users
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'IconsOnly', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'ListviewShadow', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'ListviewAlphaSelect', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\DWM', value: 'EnableAeroPeek', type: REG_DWORD, data: '0'}
+
+  # === UserPreferencesMask (animation bits off) for all users
+  - !powerShell:
+    exeDir: true
+    errorAction: Ignore
+    weight: 10
+    command: >-
+      $mask = [byte[]](0x90,0x12,0x03,0x80,0x10,0x00,0x00,0x00);
+      $targets = @('HKCU:\Control Panel\Desktop', 'Registry::HKEY_USERS\.DEFAULT\Control Panel\Desktop');
+      foreach ($target in $targets) {
+        if (Test-Path -LiteralPath $target) {
+          Set-ItemProperty -Path $target -Name 'UserPreferencesMask' -Type Binary -Value $mask -ErrorAction SilentlyContinue;
+        }
+      }

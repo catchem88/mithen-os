@@ -1,0 +1,8 @@
+---
+title: Window Snapping
+description: Enables window snapping
+privilege: TrustedInstaller
+actions:
+
+  - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'WindowArrangementActive', type: REG_SZ, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Control Panel\Desktop', value: 'WindowArrangementActive', type: REG_SZ, data: '1'}

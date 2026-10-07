@@ -1,0 +1,7 @@
+---
+title: Enable Long Paths
+description: Enables support for file paths longer than 260 characters
+privilege: TrustedInstaller
+actions:
+
+  - !registryValue: {path: 'HKLM\SYSTEM\CurrentControlSet\Control\FileSystem', value: 'LongPathsEnabled', type: REG_DWORD, data: '1'}

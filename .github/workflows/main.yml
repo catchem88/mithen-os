@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAME: 'Revi-PB-${{ github.event.workflow_run.started_at }}.apbx'
+  FILENAME: 'Mithen-PB-${{ github.event.workflow_run.started_at }}.apbx'
 
 jobs:
   build:
@@ -36,39 +36,39 @@ jobs:
           (Get-Content -Path $finalizeCMDPath) -replace 'set version=.+', "set version=$version" | Set-Content -Path $finalizeCMDPath
         shell: pwsh
 
-      - name: Fetch latest RevisionTool-Setup.exe (bundled fallback)
+      - name: Fetch latest MithenTool-Setup.exe (bundled fallback)
         run: |
-          $release = Invoke-RestMethod -Uri 'https://api.github.com/repos/meetrevision/revision-tool/releases/latest'
+          $release = Invoke-RestMethod -Uri 'https://api.github.com/repos/catchem88/mithen-tool/releases/latest'
           $version = $release.tag_name
-          $asset = $release.assets | Where-Object { $_.name -eq 'RevisionTool-Setup.exe' } | Select-Object -First 1
-          if (-not $asset) { throw 'RevisionTool-Setup.exe asset not found in latest revision-tool release' }
+          $asset = $release.assets | Where-Object { $_.name -eq 'MithenTool-Setup.exe' } | Select-Object -First 1
+          if (-not $asset) { throw 'MithenTool-Setup.exe asset not found in latest mithen-tool release' }
 
-          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile 'src\Executables\RevisionTool-Setup.exe' -UseBasicParsing
+          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile 'src\Executables\MithenTool-Setup.exe' -UseBasicParsing
 
           if ($asset.digest -like 'sha256:*') {
             $expected = $asset.digest.Substring('sha256:'.Length).ToUpper()
-            $actual = (Get-FileHash -Algorithm SHA256 -Path 'src\Executables\RevisionTool-Setup.exe').Hash
-            if ($actual -ne $expected) { throw "SHA256 mismatch for RevisionTool-Setup.exe (expected $expected, got $actual)" }
+            $actual = (Get-FileHash -Algorithm SHA256 -Path 'src\Executables\MithenTool-Setup.exe').Hash
+            if ($actual -ne $expected) { throw "SHA256 mismatch for MithenTool-Setup.exe (expected $expected, got $actual)" }
           }
-          echo "REVISION_TOOL_SHA256=$((Get-FileHash -Algorithm SHA256 -Path 'src\Executables\RevisionTool-Setup.exe').Hash)" >> $env:GITHUB_ENV
-          echo "REVISION_TOOL_VERSION=$version" >> $env:GITHUB_ENV
+          echo "MITHEN_TOOL_SHA256=$((Get-FileHash -Algorithm SHA256 -Path 'src\Executables\MithenTool-Setup.exe').Hash)" >> $env:GITHUB_ENV
+          echo "MITHEN_TOOL_VERSION=$version" >> $env:GITHUB_ENV
         shell: pwsh
 
       - name: Archive content
         run: |
-          7z a -pmalte -mhe=on "Revi-PB-${{ env.VERSION }}.apbx" ./src/*
+          7z a -pmalte -mhe=on "Mithen-PB-${{ env.VERSION }}.apbx" ./src/*
 
       - name: Generate SHA256
         run: |
-          $hash = (Get-FileHash -Algorithm SHA256 -Path "Revi-PB-${{ env.VERSION }}.apbx").Hash
+          $hash = (Get-FileHash -Algorithm SHA256 -Path "Mithen-PB-${{ env.VERSION }}.apbx").Hash
           echo ("HASH=" + $hash) >> $env:GITHUB_ENV
 
       - name: Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Uses GitHub token for authentication
-          file: "Revi-PB-${{ env.VERSION }}.apbx"
-          asset_name: "Revi-PB-${{ env.VERSION }}.apbx"
+          file: "Mithen-PB-${{ env.VERSION }}.apbx"
+          asset_name: "Mithen-PB-${{ env.VERSION }}.apbx"
           tag: ${{ env.VERSION }}
           overwrite: true
           release_name: ${{ env.VERSION }}
@@ -76,10 +76,10 @@ jobs:
           body: |
             # Download Link ✨
 
-            If you would like to support Revision, kindly download the Playbook from the provided link below.
+            If you would like to support Mithen, kindly download the Playbook from the provided link below.
 
             📌Link: 
 
             SHA256: `${{ env.HASH }}`
 
-            Bundled Revision Tool version: [${{ env.REVISION_TOOL_VERSION }}](https://github.com/meetrevision/revision-tool/releases/tag/${{ env.REVISION_TOOL_VERSION }}) (SHA256: `${{ env.REVISION_TOOL_SHA256 }}`)
+            Bundled Mithen-Tool version: [${{ env.MITHEN_TOOL_VERSION }}](https://github.com/catchem88/mithen-tool/releases/tag/${{ env.MITHEN_TOOL_VERSION }}) (SHA256: `${{ env.MITHEN_TOOL_SHA256 }}`)

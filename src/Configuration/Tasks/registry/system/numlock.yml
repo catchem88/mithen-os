@@ -1,0 +1,8 @@
+---
+title: Num Lock on Startup
+description: Turns Num Lock on when the computer starts
+privilege: TrustedInstaller
+actions:
+
+  - !registryValue: {path: 'HKCU\Control Panel\Keyboard', value: 'InitialKeyboardIndicators', type: REG_SZ, data: '2'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Control Panel\Keyboard', value: 'InitialKeyboardIndicators', type: REG_SZ, data: '2'}
