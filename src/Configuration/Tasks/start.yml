@@ -76,10 +76,4 @@ actions:
     args: '-NoP -ExecutionPolicy Bypass -File ngen.ps1'
     weight: 100
 
-  - !writeStatus: {status: "Configuring a power plan"}
-  - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
-    exe: "mithentool.exe"
-    args: "tweaks performance powerplan enable"
-    wait: true
-    runas: currentUserElevated
+

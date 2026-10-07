@@ -1,0 +1,37 @@
+---
+title: LTSC Store removal
+description: Removes the Microsoft Store and enables the "Turn off the Store application" policy when an LTSC edition is detected
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Checking for an LTSC edition"}
+  - !powerShell:
+    exeDir: true
+    errorAction: Ignore
+    weight: 20
+    command: >-
+      $currentVersion = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion';
+      $editionId = [string]$currentVersion.EditionID;
+      $productName = [string]$currentVersion.ProductName;
+      $isLtsc = ($editionId -match 'S$') -or ($productName -match 'LTSC');
+      if (-not $isLtsc) {
+        Write-Host "Not an LTSC edition ($editionId). Skipping Store removal.";
+        return;
+      }
+      Write-Host "LTSC edition detected ($editionId). Removing the Microsoft Store.";
+      $storePolicy = 'SOFTWARE\Policies\Microsoft\WindowsStore';
+      $targets = @(
+        ('HKLM:\' + $storePolicy),
+        ('HKCU:\' + $storePolicy),
+        ('Registry::HKEY_USERS\.DEFAULT\' + $storePolicy)
+      );
+      foreach ($target in $targets) {
+        if (-not (Test-Path -LiteralPath $target)) { New-Item -Path $target -Force | Out-Null }
+        Set-ItemProperty -Path $target -Name 'RemoveWindowsStore' -Value 1 -Type DWord -Force;
+      }
+      $packages = @(
+        'Microsoft.WindowsStore',
+        'Microsoft.StorePurchaseApp',
+        'Microsoft.Services.Store.Engagement'
+      );
+      & (Join-Path $env:ProgramFiles 'Mithen-Tool\mithentool.exe') appx --all-users --remove ($packages -join ',')

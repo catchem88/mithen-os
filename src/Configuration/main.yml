@@ -15,6 +15,7 @@ actions:
   # Uninstalling WinSxS packages before app-win32 could leave leftovers
   - !task: {path: 'Tasks\packages\win-sxs.yml'}
   - !task: {path: 'Tasks\packages\appx.yml'}
+  - !task: {path: 'Tasks\packages\ltsc-store.yml'}
 
   
   # Defender requires explorer to be running to disable certain protections, so that's why Explorer is terminated afterward
