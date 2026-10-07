@@ -1,2 +1,11 @@
 *.apbx
 MithenTool-Setup.exe
+*.exe
+.vscode
+.code-workspace
+*.code-workspace
+.ai/
+.qm/
+.kilo/
+.commandcode/
+res/*
