@@ -9,3 +9,23 @@ actions:
     
   # === Turn off Windows Startup sound - Enabled
   - !registryValue: {path: 'HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System', value: 'DisableStartupSound', type: REG_DWORD, data: '1'}
+
+  # === Sound Scheme -> "No Sounds" and clear every event sound,
+  #     so "Play Windows Startup sound" is unchecked too
+  - !registryValue: {path: 'HKCU\AppEvents\Schemes', value: '', type: REG_SZ, data: '.None'}
+  - !registryValue: {path: 'HKU\.DEFAULT\AppEvents\Schemes', value: '', type: REG_SZ, data: '.None'}
+  - !powerShell:
+    command: >-
+      foreach ($root in @('Registry::HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default',
+      'Registry::HKEY_USERS\.DEFAULT\AppEvents\Schemes\Apps\.Default')) {
+        if (-not (Test-Path $root)) { continue; }
+        Get-ChildItem $root -ErrorAction SilentlyContinue | ForEach-Object {
+          Get-ChildItem $_.PSPath -ErrorAction SilentlyContinue |
+          Where-Object { $_.PSChildName -in '.Current', '.Default' } |
+          ForEach-Object { Clear-ItemProperty -LiteralPath $_.PSPath -Name '*' -ErrorAction SilentlyContinue; };
+        };
+      };
+      Set-ItemProperty 'Registry::HKEY_CURRENT_USER\AppEvents\Schemes' -Name '(default)' -Value '.None';
+      Set-ItemProperty 'Registry::HKEY_USERS\.DEFAULT\AppEvents\Schemes' -Name '(default)' -Value '.None';
+    runas: currentUserElevated
+    weight: 20
