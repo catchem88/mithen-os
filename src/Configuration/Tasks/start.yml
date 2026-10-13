@@ -48,7 +48,7 @@ actions:
     exe: "vc_redist.x64.exe"
     args: '/quiet /norestart'
 
-  - !writeStatus: {status: 'Installing Mithen-Tool'}
+  - !writeStatus: {status: 'Installing MithenTool'}
   - !download: 
     url: 'https://github.com/catchem88/mithen-tool/releases/latest/download/MithenTool-Setup.exe'
     destination: "MithenTool-Setup-Latest.exe"
@@ -65,7 +65,7 @@ actions:
       } elseif (Test-Path -LiteralPath '.\MithenTool-Setup.exe') {
         '.\MithenTool-Setup.exe'
       } else {
-        throw 'No Mithen-Tool installer was found.'
+        throw 'No MithenTool installer was found.'
       };
       Start-Process -FilePath $installer -ArgumentList '/VERYSILENT /TASKS="desktopicon"' -Wait -WindowStyle Hidden
 

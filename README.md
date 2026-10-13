@@ -16,9 +16,10 @@ MithenOS is a lightweight, privacy and performance focused customization of Wind
 * Blocks Adobe telemetry and activation domains through the hosts file.
 * Performance and quality of life tweaks: trimmed services, custom visual effects, Game Mode, long paths, window snapping, Num Lock on startup, Multiplane Overlay kept on, and more.
 * Removes or disables Internet Printing, Work Folders, XPS, Fax and Scan, legacy Windows Media Player and PowerShell 2.
+* Redirects `.vbs`, `.scr` and `.pif` files to open in Notepad so they cannot be executed by double-click.
 * Keeps the Windows default power plan.
 * Removes the Microsoft Store automatically on LTSC editions.
-* Installs the Mithen apps (MithenView, MithenPDF, MithenPlayer, MithenZip) and the Mithen-Tool with its System Monitor tab.
+* Installs the Mithen apps (MithenView, MithenPDF, MithenPlayer, MithenMusic, MithenZip) and the MithenTool with its System Monitor tab.
 * Desktop and lock screen are set to plain black.
 
 ## Supported platforms
@@ -35,8 +36,8 @@ MithenOS is a lightweight, privacy and performance focused customization of Wind
 ## Part of MithenOS
 * No telemetry.
 * Windows Defender is kept enabled by default.
-* Every applied change is visible and reversible from the Mithen-Tool System Monitor.
-* No bundled third-party tooling beyond the Mithen apps and the Mithen-Tool.
+* Every applied change is visible and re-applicable from the MithenTool System Monitor.
+* No bundled third-party tooling beyond the Mithen apps and the MithenTool.
 
 ## Credits
 * [ReviOS](https://github.com/meetrevision/playbook) - the playbook this project is forked from.

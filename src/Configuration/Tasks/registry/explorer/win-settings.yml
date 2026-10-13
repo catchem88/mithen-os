@@ -6,7 +6,7 @@ actions:
 
   # === Hide stripped components from Settings
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: 'registry hide-page --value "cortana,privacy-feedback,windowsinsider"'
     wait: true
@@ -183,7 +183,7 @@ actions:
 
   # === Resume - Off
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: 'registry hide-page --value "crossdevice"'
     wait: true
@@ -305,7 +305,7 @@ actions:
 
   # === Inking & typing personalization
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks personalization input-personalization disable"
     wait: true

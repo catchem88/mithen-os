@@ -1,0 +1,12 @@
+---
+title: Script extensions open in Notepad
+description: Redirects dangerous script extensions to Notepad instead of executing them
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: "Redirecting script extensions to Notepad"}
+
+  # === .vbs / .scr / .pif open with Notepad instead of executing
+  - !registryValue: {path: 'HKCR\.vbs', value: '', type: REG_SZ, data: 'txtfilelegacy'}
+  - !registryValue: {path: 'HKCR\.scr', value: '', type: REG_SZ, data: 'txtfilelegacy'}
+  - !registryValue: {path: 'HKCR\.pif', value: '', type: REG_SZ, data: 'txtfilelegacy'}

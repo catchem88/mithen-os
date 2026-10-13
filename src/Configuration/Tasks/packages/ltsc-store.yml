@@ -34,4 +34,4 @@ actions:
         'Microsoft.StorePurchaseApp',
         'Microsoft.Services.Store.Engagement'
       );
-      & (Join-Path $env:ProgramFiles 'Mithen-Tool\mithentool.exe') appx --all-users --remove ($packages -join ',')
+      & (Join-Path $env:ProgramFiles 'MithenTool\mithentool.exe') appx --all-users --remove ($packages -join ',')

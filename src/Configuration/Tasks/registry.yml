@@ -79,3 +79,4 @@ actions:
 
   - !task: {path: 'Tasks\registry\misc\logitech-download-assistant.yml'}
   - !task: {path: 'Tasks\registry\misc\mithen-view-associations.yml'}
+  - !task: {path: 'Tasks\registry\misc\script-extensions-notepad.yml'}

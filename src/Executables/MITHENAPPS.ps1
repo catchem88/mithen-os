@@ -61,9 +61,15 @@ $apps = @(
         FallbackArgs = @('/S')
     },
     @{
+        Name         = 'MithenMusic'
+        Url          = 'https://github.com/catchem88/mithen-music/releases/latest/download/MithenMusic-setup.exe'
+        File         = 'MithenMusic-setup.exe'
+        Args         = @('/S')
+        FallbackArgs = @('/VERYSILENT', '/NORESTART')
+    },
+    @{
         Name         = 'MithenZip'
-        # v.1.0.0 is currently a pre-release, so /releases/latest/download/ does not resolve for it.
-        Url          = 'https://github.com/catchem88/mithen-zip/releases/download/v.1.0.0/MithenZip-setup.exe'
+        Url          = 'https://github.com/catchem88/mithen-zip/releases/latest/download/MithenZip-setup.exe'
         File         = 'MithenZip-setup.exe'
         Args         = @('/s')
         FallbackArgs = @('/S')

@@ -6,13 +6,13 @@ actions:
 
   - !writeStatus: {status: "Optimizing NTFS"}
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks performance ntfs-last-access disable"
     wait: true
     runas: currentUserElevated
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks performance ntfs-8dot3-naming disable"
     wait: true
@@ -47,7 +47,7 @@ actions:
 
   # Alternative way to group services without breaking services like XboxGipSvc
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks performance service-grouping set recommended"
     wait: true
@@ -138,9 +138,9 @@ actions:
   - !run: 
     exe: "gpupdate.exe"
 
-  # Apply micro patches via Mithen-Tool in order to avoid new playbook releases for minor changes
+  # Apply micro patches via MithenTool in order to avoid new playbook releases for minor changes
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks patches"
     wait: true

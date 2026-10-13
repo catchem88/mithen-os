@@ -69,4 +69,19 @@
   <Association Identifier=".asf" ProgId="mpc-be64.asf" ApplicationName="MithenPlayer" />
   <Association Identifier=".mts" ProgId="mpc-be64.mts" ApplicationName="MithenPlayer" />
   <Association Identifier=".m2t" ProgId="mpc-be64.m2t" ApplicationName="MithenPlayer" />
+  <Association Identifier=".mp3" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".flac" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".m4a" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".m4b" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".aac" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".ogg" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".oga" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".opus" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".wav" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".wma" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".aiff" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".aif" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".ape" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".wv" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
+  <Association Identifier=".mka" ProgId="MithenMusic.Audio" ApplicationName="MithenMusic" />
 </DefaultAssociations>

@@ -8,14 +8,14 @@ actions:
   # ------> Disabling hibernate improves system stability, fixes dual-boot and upgrade issues, and frees up disk space
   # ------> NOTE: It can cause overheating in sleep mode.
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks utilities hibernation disable"
     wait: true
     runas: currentUserElevated
     option: disable-hibernate
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks utilities fast-startup disable"
     wait: true
@@ -24,14 +24,14 @@ actions:
 
   # === Enable Hibernate via mithentool
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks utilities hibernation enable"
     wait: true
     runas: currentUserElevated
     option: enable-hibernate
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks utilities fast-startup enable"
     wait: true

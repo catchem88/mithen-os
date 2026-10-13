@@ -82,4 +82,4 @@ jobs:
 
             SHA256: `${{ env.HASH }}`
 
-            Bundled Mithen-Tool version: [${{ env.MITHEN_TOOL_VERSION }}](https://github.com/catchem88/mithen-tool/releases/tag/${{ env.MITHEN_TOOL_VERSION }}) (SHA256: `${{ env.MITHEN_TOOL_SHA256 }}`)
+            Bundled MithenTool version: [${{ env.MITHEN_TOOL_VERSION }}](https://github.com/catchem88/mithen-tool/releases/tag/${{ env.MITHEN_TOOL_VERSION }}) (SHA256: `${{ env.MITHEN_TOOL_SHA256 }}`)

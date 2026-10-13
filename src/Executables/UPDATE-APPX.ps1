@@ -3,11 +3,11 @@ Write-Host 'Updating Microsoft Store apps...'
 # Add-AppPackage 'https://cdn.winget.microsoft.com/cache/source.msix' -ForceApplicationShutdown -Verbose
 $productName = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion').ProductName
 Write-Host "Product Name: $productName"
-$path = Join-Path $env:ProgramFiles 'Mithen-Tool'
+$path = Join-Path $env:ProgramFiles 'MithenTool'
 $file = Join-Path $path 'mithentool.exe'
 
 if (!(Test-Path $path) -or !(Test-Path $file)) {
-    Write-Host 'Mithen-Tool not found. Skipping update.'
+    Write-Host 'MithenTool not found. Skipping update.'
     exit 1
 }
 

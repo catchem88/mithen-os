@@ -8,7 +8,7 @@ actions:
   # ------> By default it's disabled due to security reasons; Enabling it makes 4~5 times faster in database transaction and around 40% faster in specific workloads
   # https://github.com/catchem88/mithen-os/issues/100
   - !run:
-    path: "%ProgramFiles%\\Mithen-Tool"
+    path: "%ProgramFiles%\\MithenTool"
     exe: "mithentool.exe"
     args: "tweaks performance intel-tsx enable"
     wait: true
