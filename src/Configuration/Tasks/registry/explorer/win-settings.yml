@@ -39,7 +39,23 @@ actions:
 
   # === Allow Storage Sense - Disabled
   # ------> Storage Sense is turned off the machine. Users cannot enable Storage Sense
-  # - !registryValue: {path: 'HKLM\Software\Policies\Microsoft\Windows\StorageSense', value: 'AllowStorageSenseGlobal', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\Software\Policies\Microsoft\Windows\StorageSense', value: 'AllowStorageSenseGlobal', type: REG_DWORD, data: '0'}
+
+  # ======> Personalization
+
+  # === Dynamic Lighting - Disabled
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Lighting', value: 'Enabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Lighting', value: 'Enabled', type: REG_DWORD, data: '0'}
+
+  # ======> Privacy & security
+
+  # === Custom inking dictionary - Disabled
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Personalization\Settings', value: 'AcceptedPrivacyPolicy', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Personalization\Settings', value: 'AcceptedPrivacyPolicy', type: REG_DWORD, data: '0'}
+
+  # === Search my accounts -> Microsoft account / Work or school account - Disabled
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsAccountSearchEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\SearchSettings', value: 'IsAccountSearchEnabled', type: REG_DWORD, data: '0'}
 
   # ======> Tablet mode
 

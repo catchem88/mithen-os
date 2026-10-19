@@ -11,6 +11,10 @@ actions:
   # === Disable system beeps.
   - !registryValue: {path: 'HKCU\Control Panel\Sound', value: 'Beep', type: REG_SZ, data: 'no'}
   - !registryValue: {path: 'HKU\.DEFAULT\Control Panel\Sound', value: 'Beep', type: REG_SZ, data: 'no'}
+
+  # === Recycle Bin - Display delete confirmation dialog - Enabled
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket', value: 'ConfirmFileDelete', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket', value: 'ConfirmFileDelete', type: REG_DWORD, data: '1'}
   
   # === Makes the Start Menu appear almost instantly when you click on the Windows icon in the Taskbar.
   - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'MenuShowDelay', type: REG_SZ, data: '0'}

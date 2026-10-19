@@ -1,0 +1,11 @@
+---
+title: Configure Microsoft Edge
+description: Disable Edge startup boost and background mode
+privilege: TrustedInstaller
+actions:
+
+  # === Disable Edge startup boost
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'StartupBoostEnabled', type: REG_DWORD, data: '0'}
+
+  # === Disable Edge background mode (keeps Edge running after the last window closes)
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'BackgroundModeEnabled', type: REG_DWORD, data: '0'}
