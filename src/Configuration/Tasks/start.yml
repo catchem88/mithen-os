@@ -68,6 +68,7 @@ actions:
         throw 'No MithenTool installer was found.'
       };
       Start-Process -FilePath $installer -ArgumentList '/VERYSILENT /TASKS="desktopicon"' -Wait -WindowStyle Hidden
+  if (-not (Test-Path (Join-Path $env:ProgramFiles 'MithenTool\mithentool.exe'))) { throw 'MithenTool was not installed' }
 
   - !writeStatus: {status: "Optimizing PowerShell"}
   - !run:

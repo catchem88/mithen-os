@@ -30,6 +30,9 @@ actions:
     #  6 Above Normal
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\SearchIndexer.exe\PerfOptions', value: 'CpuPriorityClass', type: REG_DWORD, data: '5'}
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\ctfmon.exe\PerfOptions', value: 'CpuPriorityClass', type: REG_DWORD, data: '5'}
+  # === Reduce CTFMon overhead - Enabled (with the priority class above)
+  - !registryValue: {path: 'HKLM\Software\Microsoft\Input', value: 'InputServiceEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\Software\Microsoft\Input', value: 'InputServiceEnabledForCCI', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\fontdrvhost.exe\PerfOptions', value: 'CpuPriorityClass', type: REG_DWORD, data: '1'}
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\fontdrvhost.exe\PerfOptions', value: 'IoPriority', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\lsass.exe\PerfOptions', value: 'CpuPriorityClass', type: REG_DWORD, data: '1'}

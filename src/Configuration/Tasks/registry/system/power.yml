@@ -46,3 +46,14 @@ actions:
   # ------> https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/shutdown-allow-system-to-be-shut-down-without-having-to-log-on
   # ------> https://www.stigviewer.com/stig/windows_server_2012_member_server/2014-01-07/finding/V-1075
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', value: 'ShutdownWithoutLogon', type: REG_DWORD, data: '1'}
+
+  # =========================
+  # === Usage reporting (battery health and data use) - Disabled
+  # =========================
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Control\Session Manager\Power', value: 'SleepStudyDisabled', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Services\DPS', value: 'Start', type: REG_DWORD, data: '4'}
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Services\diagsvc', value: 'Start', type: REG_DWORD, data: '4'}
+  - !cmd:
+    command: 'wevtutil sl Microsoft-Windows-SleepStudy/Diagnostic /q:false & wevtutil sl Microsoft-Windows-Kernel-Processor-Power/Diagnostic /q:false & wevtutil sl Microsoft-Windows-UserModePowerService/Diagnostic /q:false'
+    ignoreErrors: true
+    weight: 20

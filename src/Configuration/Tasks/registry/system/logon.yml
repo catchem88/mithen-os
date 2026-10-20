@@ -12,10 +12,12 @@ actions:
 
   # === Sound Scheme -> "No Sounds" and clear every event sound,
   #     so "Play Windows Startup sound" is unchecked too
-  - !registryValue: {path: 'HKCU\AppEvents\Schemes', value: '', type: REG_SZ, data: '.None'}
-  - !registryValue: {path: 'HKU\.DEFAULT\AppEvents\Schemes', value: '', type: REG_SZ, data: '.None'}
+  # ------> The scheme default and every event value are written by the script
+  # ------> below; writing the key default value through the playbook engine
+  # ------> proved unreliable.
   - !powerShell:
     command: >-
+      New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS -ErrorAction SilentlyContinue | Out-Null;
       foreach ($root in @('Registry::HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default',
       'Registry::HKEY_USERS\.DEFAULT\AppEvents\Schemes\Apps\.Default')) {
         if (-not (Test-Path $root)) { continue; }
@@ -25,7 +27,14 @@ actions:
           ForEach-Object { Clear-ItemProperty -LiteralPath $_.PSPath -Name '*' -ErrorAction SilentlyContinue; };
         };
       };
-      Set-ItemProperty 'Registry::HKEY_CURRENT_USER\AppEvents\Schemes' -Name '(default)' -Value '.None';
-      Set-ItemProperty 'Registry::HKEY_USERS\.DEFAULT\AppEvents\Schemes' -Name '(default)' -Value '.None';
+      foreach ($scheme in @('Registry::HKEY_CURRENT_USER\AppEvents\Schemes',
+      'Registry::HKEY_USERS\.DEFAULT\AppEvents\Schemes')) {
+        if (Test-Path $scheme) {
+          Set-ItemProperty -LiteralPath $scheme -Name '(default)' -Value '.None';
+        }
+      };
+    exeDir: true
+    wait: true
+    errorAction: Log
     runas: currentUserElevated
     weight: 20

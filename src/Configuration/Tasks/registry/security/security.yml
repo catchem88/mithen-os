@@ -9,6 +9,14 @@ actions:
   - !registryValue: {path: 'HKCU\Software\Microsoft\Windows Security Health\State', value: 'AccountProtection_MicrosoftAccount_Disconnected', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows Security Health\State', value: 'AccountProtection_MicrosoftAccount_Disconnected', type: REG_DWORD, data: '0'}
 
+  # === Spectre & Meltdown mitigations - Disabled
+  # ------> FeatureSettings=1 is what makes Windows honour the override below
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Control\Session Manager\Memory Management', value: 'FeatureSettings', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Control\Session Manager\Memory Management', value: 'FeatureSettingsOverride', type: REG_DWORD, data: '3'}
+  - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Control\Session Manager\Memory Management', value: 'FeatureSettingsOverrideMask', type: REG_DWORD, data: '3'}
+
+  # === UAC - do not dim the desktop
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', value: 'PromptOnSecureDesktop', type: REG_DWORD, data: '0'}
   # ==============================================
   # === Windows Defender Antivirus - Reporting ===
   # ==============================================

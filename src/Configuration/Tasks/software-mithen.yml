@@ -12,5 +12,5 @@ actions:
     exe: "PowerShell"
     args: '-NoP -ExecutionPolicy Bypass -File MITHENAPPS.ps1'
     wait: true
-    errorAction: Ignore
+    errorAction: Log
     weight: 150

@@ -107,6 +107,14 @@ actions:
   # === 'Show recommendations for tips, shortcuts, new apps, and more' - Disabled
   - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_IrisRecommendations', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_IrisRecommendations', type: REG_DWORD, data: '0'}
+  # === Start menu - recently added apps, recent items/jump lists, account notifications - Disabled
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_TrackProgs', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_TrackProgs', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_AccountNotifications', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_AccountNotifications', type: REG_DWORD, data: '0'}
+  # ------> Start menu layout - List
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_Layout', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_Layout', type: REG_DWORD, data: '1'}
 
   # === 'Recommended section' in Start - Removed (policy; more durable than the per-user value above)
   # ------> WinUtil "Start Menu Recommendations"

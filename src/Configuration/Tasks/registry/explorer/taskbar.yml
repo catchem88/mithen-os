@@ -4,9 +4,9 @@ description: Configure Taskbar
 privilege: TrustedInstaller
 actions:
 
-  # === Show Search Icon
-  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Search', value: 'SearchboxTaskbarMode', type: REG_DWORD, data: '1'}
-  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Search', value: 'SearchboxTaskbarMode', type: REG_DWORD, data: '1'}
+  # === Taskbar search - Hide
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Search', value: 'SearchboxTaskbarMode', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Search', value: 'SearchboxTaskbarMode', type: REG_DWORD, data: '0'}
 
   # === Show Task View button - Disabled
   - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'ShowTaskViewButton', type: REG_DWORD, data: '0'}
@@ -39,3 +39,33 @@ actions:
 
   # === Remove the Meet Now icon - Enabled
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer', value: 'HideSCAMeetNow', type: REG_DWORD, data: '1'}
+  # === Taskbar behaviors
+  # ------> alignment Left
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAl', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAl', type: REG_DWORD, data: '0'}
+  # ------> combine taskbar buttons - Never
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarGlomLevel', type: REG_DWORD, data: '2'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarGlomLevel', type: REG_DWORD, data: '2'}
+  # ------> select the far corner of the taskbar to show the desktop - On
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarSd', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarSd', type: REG_DWORD, data: '1'}  # ------> show badges on taskbar apps - Off
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarBadges', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarBadges', type: REG_DWORD, data: '0'}
+  # ------> show flashing on taskbar apps - Off
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarFlashing', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarFlashing', type: REG_DWORD, data: '0'}
+  # ------> share any window from my taskbar - None
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarSn', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarSn', type: REG_DWORD, data: '0'}
+
+  # === System tray icons
+  # ------> Emoji and more - Never
+  - !registryValue: {path: 'HKCU\Software\Microsoft\TabletTip\1.7', value: 'EmojiAndMoreIconVisibilityState', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\TabletTip\1.7', value: 'EmojiAndMoreIconVisibilityState', type: REG_DWORD, data: '0'}
+  # ------> Touch keyboard - Never
+  - !registryValue: {path: 'HKCU\Software\Microsoft\TabletTip\1.7', value: 'TipbandDesiredVisibility', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\TabletTip\1.7', value: 'TipbandDesiredVisibility', type: REG_DWORD, data: '0'}  # ------> Resume (cross-device) taskbar item - Off
+  # ------> NOTE: value name comes from the ElevenForum guide for this toggle;
+  # ------> verify in the VM that only the Resume toggle flips.
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'IsEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'IsEnabled', type: REG_DWORD, data: '0'}
