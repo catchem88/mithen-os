@@ -20,6 +20,13 @@ actions:
   # === Disable Windows Defender sample submission nag
   - !registryValue: {path: 'HKLM\Software\Policies\Microsoft\Windows Defender\Spynet', value: 'SubmitSamplesConsent', type: REG_DWORD, data: '2'}
 
+  # === Cloud-delivered protection - Disabled
+  - !registryValue: {path: 'HKLM\Software\Policies\Microsoft\Windows Defender\Spynet', value: 'SpynetReporting', type: REG_DWORD, data: '0'}
+
+  # === Dev Drive protection - Disabled (async scan on open)
+  # ------> https://www.elevenforum.com/t/enable-or-disable-performance-mode-for-dev-drive-protection-in-windows-11.17215/
+  - !registryValue: {path: 'HKLM\Software\Microsoft\Windows Defender\Real-Time Protection', value: 'DisableAsyncScanOnOpen', type: REG_DWORD, data: '1'}
+
   # ==================================================================
   # === Windows Defender Antivirus - Security Intelligence Updates ===
   # ==================================================================
