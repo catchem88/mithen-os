@@ -1,0 +1,16 @@
+﻿=== MithenOS verify ===
+Start: ShowRecentList=0 AllAppsViewMode=2
+Start: VisiblePlaces=
+Advanced: Start_TrackDocs=0 Start_TrackProgs=0 TaskbarSize=1
+Sound: scheme=.None events with a sound=0
+Pins C:\Users\adrian\AppData\Local\Microsoft\Windows\Shell\LayoutModification.json: {"pinnedList":[{"packagedAppId":"Microsoft.ScreenSketch_8wekyb3d8bbwe!App"},{"packagedAppId":"Microsoft.WindowsCamera_8wekyb3d8bbwe!App"},{"packagedAppId":"Microsoft.WindowsCalculator_8wekyb3d8bbwe!App"},{"desktopAppLink":"%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\Microsoft Edge.lnk"},{"desktopAppLink":"%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\MithenMusic.lnk"},{"desktopAppLink":"%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\MithenTool.lnk"}]}
+Pins C:\Users\Default\AppData\Local\Microsoft\Windows\Shell\LayoutModification.json: {"pinnedList":[{"packagedAppId":"Microsoft.ScreenSketch_8wekyb3d8bbwe!App"},{"packagedAppId":"Microsoft.WindowsCamera_8wekyb3d8bbwe!App"},{"packagedAppId":"Microsoft.WindowsCalculator_8wekyb3d8bbwe!App"},{"desktopAppLink":"%ALLUSERSPROFILE%\\Microsoft\\Windows\\Start Menu\\Programs\\Microsoft Edge.lnk"},{"desktopAppLink":"%ALLUSERSPROFILE%\\Microsoft\\Windows\\Start Menu\\Programs\\MithenMusic.lnk"},{"desktopAppLink":"%ALLUSERSPROFILE%\\Microsoft\\Windows\\Start Menu\\Programs\\MithenTool.lnk"}]}
+StartPins policy: absent
+AllowPinnedFolderSettings=1/1 AllowPinnedFolderFileExplorer=1/1
+Extension Edge: force_installed policy set
+Extension Chrome: force_installed policy set
+MithenTool: installed
+AME log: C:\ProgramData\AME\Logs\[2026-10-21 (5.53 PM)] MithenOS\Log.yml
+AME log: C:\ProgramData\AME\Logs\Log.yml
+AME log: C:\ProgramData\AME\Logs\[2026-10-21 (10.09 AM)] MithenOS\Log.yml
+=== end verify ===

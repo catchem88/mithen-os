@@ -57,7 +57,7 @@ actions:
   - !powerShell:
     exeDir: true
     wait: true
-    errorAction: Halt
+    errorAction: Log
     weight: 50
     command: >-
       $installer = if (Test-Path -LiteralPath '.\MithenTool-Setup-Latest.exe') {
@@ -67,8 +67,11 @@ actions:
       } else {
         throw 'No MithenTool installer was found.'
       };
-      Start-Process -FilePath $installer -ArgumentList '/VERYSILENT /TASKS="desktopicon"' -Wait -WindowStyle Hidden
-  if (-not (Test-Path (Join-Path $env:ProgramFiles 'MithenTool\mithentool.exe'))) { throw 'MithenTool was not installed' }
+      Start-Process -FilePath $installer -ArgumentList '/VERYSILENT /NORESTART' -Wait -WindowStyle Hidden;
+      if (-not (Test-Path (Join-Path $env:ProgramFiles 'MithenTool\mithentool.exe'))) { throw 'MithenTool was not installed' };
+      foreach ($desktop in @((Join-Path $env:PUBLIC 'Desktop'), (Join-Path $env:USERPROFILE 'Desktop'))) {
+        Get-ChildItem -Path $desktop -Filter 'Mithen*.lnk' -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue;
+      }
 
   - !writeStatus: {status: "Optimizing PowerShell"}
   - !run:

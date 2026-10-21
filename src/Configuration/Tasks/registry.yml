@@ -41,6 +41,7 @@ actions:
   - !writeStatus: {status: "Configuring Security"}
   - !task: {path: 'Tasks\registry\security\security.yml'}
   - !task: {path: 'Tasks\registry\security\vbs.yml'}
+  - !task: {path: 'Tasks\registry\security\bitlocker.yml'}
 
   # System
   - !writeStatus: {status: "Configuring System"}
@@ -61,6 +62,8 @@ actions:
   - !task: {path: 'Tasks\registry\system\numlock.yml'}
   - !task: {path: 'Tasks\registry\system\game-mode.yml'}
   - !task: {path: 'Tasks\registry\system\mpo.yml'}
+  - !task: {path: 'Tasks\registry\system\edge.yml'}
+  - !task: {path: 'Tasks\registry\system\chrome.yml'}
   # Updates
   - !writeStatus: {status: "Configuring Updates"}
   - !task: {path: 'Tasks\registry\updates\updates.yml'}

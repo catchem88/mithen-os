@@ -58,6 +58,11 @@ actions:
   - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarSn', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarSn', type: REG_DWORD, data: '0'}
 
+  # ------> taskbar size - Small (0 = Default, 1 = Small)
+  # ------> Available from Windows 11 build 26100.9278, applies after Explorer restarts
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarSize', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarSize', type: REG_DWORD, data: '1'}
+
   # === System tray icons
   # ------> Emoji and more - Never
   - !registryValue: {path: 'HKCU\Software\Microsoft\TabletTip\1.7', value: 'EmojiAndMoreIconVisibilityState', type: REG_DWORD, data: '0'}

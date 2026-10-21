@@ -15,7 +15,14 @@ actions:
   # === Recycle Bin - Display delete confirmation dialog - Enabled
   - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket', value: 'ConfirmFileDelete', type: REG_DWORD, data: '1'}
   - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\BitBucket', value: 'ConfirmFileDelete', type: REG_DWORD, data: '1'}
+  # ------> The policy value is what the dialog honours on current builds
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer', value: 'ConfirmFileDelete', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer', value: 'ConfirmFileDelete', type: REG_DWORD, data: '1'}
   
+  # === Narrator keyboard shortcut (Win+Ctrl+Enter) - Disabled
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Narrator\NoRoam', value: 'WinEnterLaunchEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Narrator\NoRoam', value: 'WinEnterLaunchEnabled', type: REG_DWORD, data: '0'}
+
   # === Makes the Start Menu appear almost instantly when you click on the Windows icon in the Taskbar.
   - !registryValue: {path: 'HKCU\Control Panel\Desktop', value: 'MenuShowDelay', type: REG_SZ, data: '0'}
   - !registryValue: {path: 'HKU\.DEFAULT\Control Panel\Desktop', value: 'MenuShowDelay', type: REG_SZ, data: '0'}

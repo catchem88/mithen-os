@@ -1,0 +1,12 @@
+---
+title: Configure Google Chrome
+description: Force install uBlock Origin Lite
+privilege: TrustedInstaller
+actions:
+
+  # === uBlock Origin Lite - Chrome entry
+  # ------> Chrome accepts a bare store id in the forcelist; this only affects
+  # ------> Chrome, Edge is handled in edge.yml
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Google\Chrome\ExtensionSettings', value: '1', operation: delete}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Google\Chrome\ExtensionSettings', value: 'ddkjiahejlhfcafbddmgiahcphecmpfh', operation: delete}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist', value: '1', type: REG_SZ, data: 'ddkjiahejlhfcafbddmgiahcphecmpfh'}

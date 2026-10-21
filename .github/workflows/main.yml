@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  FILENAME: 'Mithen-PB-${{ github.event.workflow_run.started_at }}.apbx'
+  FILENAME: 'MithenOS_Playbook_v${{ github.event.workflow_run.started_at }}.apbx'
 
 jobs:
   build:
@@ -17,23 +17,17 @@ jobs:
         with:
           ref: 'main'
 
-      - name: Set version
-        id: set_version
+      - name: Read version
+        id: read_version
         run: |
-          # Get current date in "YY.MM" format
-          CURRENT_DATE=$(date +%y.%m)
-          echo "VERSION=${CURRENT_DATE}" >> $GITHUB_ENV
-        shell: bash
+          $conf = [xml](Get-Content -Path 'src\playbook.conf')
+          $version = $conf.Playbook.Version
+          echo "VERSION=$version" >> $env:GITHUB_ENV
+        shell: pwsh
 
-      - name: Update version
+      - name: Sync version into FINALIZE.cmd
         run: |
-          $version = "${{ env.VERSION }}"
-          $playbookConfPath = "src\playbook.conf"
-          $finalizeCMDPath = "src\Executables\FINALIZE.cmd"
-
-          (Get-Content -Path $playbookConfPath) -replace '<Version>.*</Version>', "<Version>$version</Version>" | Set-Content -Path $playbookConfPath
-
-          (Get-Content -Path $finalizeCMDPath) -replace 'set version=.+', "set version=$version" | Set-Content -Path $finalizeCMDPath
+          (Get-Content -Path 'src\Executables\FINALIZE.cmd') -replace 'set version=.+', "set version=${{ env.VERSION }}" | Set-Content -Path 'src\Executables\FINALIZE.cmd'
         shell: pwsh
 
       - name: Fetch latest MithenTool-Setup.exe (bundled fallback)
@@ -56,22 +50,22 @@ jobs:
 
       - name: Archive content
         run: |
-          7z a -pmalte -mhe=on "Mithen-PB-${{ env.VERSION }}.apbx" ./src/*
+          7z a -pmalte -mhe=on "MithenOS_Playbook_v${{ env.VERSION }}.apbx" ./src/*
 
       - name: Generate SHA256
         run: |
-          $hash = (Get-FileHash -Algorithm SHA256 -Path "Mithen-PB-${{ env.VERSION }}.apbx").Hash
+          $hash = (Get-FileHash -Algorithm SHA256 -Path "MithenOS_Playbook_v${{ env.VERSION }}.apbx").Hash
           echo ("HASH=" + $hash) >> $env:GITHUB_ENV
 
       - name: Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Uses GitHub token for authentication
-          file: "Mithen-PB-${{ env.VERSION }}.apbx"
-          asset_name: "Mithen-PB-${{ env.VERSION }}.apbx"
-          tag: ${{ env.VERSION }}
+          file: "MithenOS_Playbook_v${{ env.VERSION }}.apbx"
+          asset_name: "MithenOS_Playbook_v${{ env.VERSION }}.apbx"
+          tag: v.${{ env.VERSION }}
           overwrite: true
-          release_name: ${{ env.VERSION }}
+          release_name: MithenOS Playbook v${{ env.VERSION }}
           prerelease: false # Always set to false
           body: |
             # Download Link ✨

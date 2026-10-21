@@ -16,6 +16,7 @@ actions:
   - !task: {path: 'Tasks\packages\win-sxs.yml'}
   - !task: {path: 'Tasks\packages\appx.yml'}
   - !task: {path: 'Tasks\packages\ltsc-store.yml'}
+  - !task: {path: 'Tasks\packages\optional-features.yml'}
 
   
   # Defender requires explorer to be running to disable certain protections, so that's why Explorer is terminated afterward
@@ -28,11 +29,13 @@ actions:
   - !taskKill: {name: "backgroundTaskHost", errorAction: Ignore}
   - !taskKill: {name: "Widgets", errorAction: Ignore}
 
-  - !task: {path: 'Tasks\software.yml'}
-  - !task: {path: 'Tasks\software-mithen.yml'}
   - !task: {path: 'Tasks\services.yml'}
   - !task: {path: 'Tasks\services-manual.yml'}
   
   - !task: {path: 'Tasks\registry.yml'}
   - !task: {path: 'Tasks\revert.yml'}
   - !task: {path: 'Tasks\final.yml'}
+
+  # Mithen apps go last: their installers download and run one by one, and a slow or
+  # stuck one should not hold up the rest of the configuration
+  - !task: {path: 'Tasks\software-mithen.yml'}

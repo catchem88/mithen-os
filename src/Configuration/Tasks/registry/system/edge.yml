@@ -1,6 +1,6 @@
 ---
 title: Configure Microsoft Edge
-description: Disable Edge startup boost and background mode
+description: Disable Edge startup boost, background mode and its startup app
 privilege: TrustedInstaller
 actions:
 
@@ -9,3 +9,44 @@ actions:
 
   # === Disable Edge background mode (keeps Edge running after the last window closes)
   - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'BackgroundModeEnabled', type: REG_DWORD, data: '0'}
+
+  # === Favorites bar - Never
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'FavoritesBarEnabled', type: REG_DWORD, data: '0'}
+
+  # === uBlock Origin Lite - not policy installable on this system
+  # ------> Edge reports "Invalid extension ID" for every form of the entry, and
+  # ------> already says an unmanaged device may only install store hosted
+  # ------> extensions. Nothing is written, and stale values are removed so
+  # ------> edge://policy stays clean. Install it from the Add-ons store by hand.
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForcelist', value: '1', operation: delete}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge\ExtensionSettings', value: '1', operation: delete}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge\ExtensionSettings', value: 'cimighlppcgcoapaliogpjjdehbnof', operation: delete}
+
+  # === New tab page defaults - quick links, promoted links, content, widgets,
+  # === feed and background all off
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'NewTabPageQuickLinksEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'NewTabPageContentEnabled', type: REG_DWORD, data: '0'}
+  # ------> 1 = background disabled, 2 = daily image, 3 = custom image
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'NewTabPageAllowedBackgroundTypes', type: REG_DWORD, data: '1'}
+
+  # === Disable the Edge entry in Startup apps
+  # ------> Edge registers itself as 'MicrosoftEdgeAutoLaunch_<id>' in the Run key;
+  # ------> Startup apps reads the 12 byte REG_BINARY blob in StartupApproved\Run,
+  # ------> where a leading 03 means disabled and 02 means enabled.
+  - !powerShell:
+    exeDir: true
+    wait: true
+    errorAction: Log
+    weight: 20
+    command: >-
+      foreach ($hive in @('HKCU:', 'Registry::HKEY_USERS\.DEFAULT')) {
+        $run = Join-Path $hive 'Software\Microsoft\Windows\CurrentVersion\Run';
+        $approved = Join-Path $hive 'Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run';
+        if (-not (Test-Path $run)) { continue; }
+        $names = (Get-Item $run).Property | Where-Object { $_ -like 'MicrosoftEdgeAutoLaunch*' };
+        if (-not $names) { continue; }
+        if (-not (Test-Path $approved)) { New-Item -Path $approved -Force | Out-Null; }
+        foreach ($name in $names) {
+          New-ItemProperty -Path $approved -Name $name -PropertyType Binary -Value ([byte[]](3,0,0,0,0,0,0,0,0,0,0,0)) -Force | Out-Null;
+        }
+      };

@@ -75,8 +75,30 @@ function New-CustomTheme {
     }
     
     Copy-Item -Path $baseTheme -Destination $themeExportPath -Force
-    
-    (Get-Content $themeExportPath) | ForEach-Object {
+
+    # Strip the [Sounds] section: the base theme carries the Windows Default sound
+    # scheme, and applying it restores every event sound. The playbook sets the
+    # "No Sounds" scheme separately, so the theme must not touch sounds at all.
+    $lines = Get-Content $themeExportPath
+    $kept = @()
+    $skipSounds = $false
+    foreach ($line in $lines) {
+        if ($line -match '^\s*\[Sounds\]') {
+            $skipSounds = $true
+            continue
+        }
+        if ($skipSounds) {
+            if ($line -match '^\s*\[') {
+                $skipSounds = $false
+            }
+            else {
+                continue
+            }
+        }
+        $kept += $line
+    }
+
+    $kept | ForEach-Object {
         switch -Regex ($_) {
             '^Wallpaper=' { "Wallpaper=$wallpaperPath" }
             '^SystemMode=' { "SystemMode=$systemMode" }

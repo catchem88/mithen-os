@@ -12,10 +12,10 @@ actions:
     weight: 10
     command: >-
       $paths = @();
-      if ($env:LOCALAPPDATA) { $paths += (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsStore_8wekyb3d8bbwe\LocalState\store.db') }
+      if ($env:LOCALAPPDATA) { $paths += (Join-Path $env:LOCALAPPDATA 'Packages\Microsoft.WindowsStore_8wekyb3d8bbwe\LocalState\store.db') };
       Get-ChildItem 'C:\Users' -Directory -ErrorAction SilentlyContinue | ForEach-Object {
         $paths += (Join-Path $_.FullName 'AppData\Local\Packages\Microsoft.WindowsStore_8wekyb3d8bbwe\LocalState\store.db')
-      }
+      };
       foreach ($db in ($paths | Select-Object -Unique)) {
         if (Test-Path -LiteralPath $db) {
           icacls $db /deny '*S-1-1-0:F' | Out-Null

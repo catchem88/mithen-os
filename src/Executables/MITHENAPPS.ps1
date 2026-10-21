@@ -3,7 +3,8 @@ function Install-MithenApp {
         [string]$Name,
         [string]$Url,
         [string]$File,
-        [string[]]$Args,
+        # Not named $Args on purpose: that is an automatic variable and the value passed in arrives as null
+        [string[]]$SilentArgs,
         [string[]]$FallbackArgs
     )
 
@@ -20,13 +21,34 @@ function Install-MithenApp {
         Invoke-WebRequest -Uri $Url -OutFile $File -UseBasicParsing
 
         $path = Join-Path (Get-Location) $File
-        Write-Host "Installing $Name"
-        $process = Start-Process -FilePath $path -ArgumentList $Args -Wait -PassThru
+        $timeoutSeconds = 180
 
-        if ($process.ExitCode -ne 0 -and $FallbackArgs) {
-            Write-Host "${Name}: primary flags failed (exit $($process.ExitCode)), retrying with fallback flags"
-            Start-Process -FilePath $path -ArgumentList $FallbackArgs -Wait
+        foreach ($flags in @($SilentArgs, $FallbackArgs)) {
+            if (-not $flags) {
+                continue
+            }
+
+            Write-Host "Installing $Name with $($flags -join ' ')"
+            $process = Start-Process -FilePath $path -ArgumentList $flags -PassThru
+
+            # An installer that opens a dialog never returns and an unattended run has
+            # nothing to dismiss it with, so the wait has to be bounded
+            if (-not $process.WaitForExit($timeoutSeconds * 1000)) {
+                Write-Host "$Name`: installer did not finish within $timeoutSeconds seconds, killing it"
+                Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+                Get-Process -Name ([System.IO.Path]::GetFileNameWithoutExtension($File)) -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+                continue
+            }
+
+            if ($process.ExitCode -eq 0) {
+                Write-Host "$Name installed"
+                return
+            }
+
+            Write-Host "$Name`: installer exited with $($process.ExitCode)"
         }
+
+        Write-Host "Failed to install $Name"
     }
     catch {
         Write-Host "Failed to install ${Name}: $($_.Exception.Message)"
@@ -57,7 +79,7 @@ $apps = @(
         Name         = 'MithenPlayer'
         Url          = 'https://github.com/catchem88/mithen-player/releases/latest/download/MithenPlayer-setup.exe'
         File         = 'MithenPlayer-setup.exe'
-        Args         = @('/VERYSILENT', '/NORESTART')
+        Args         = @('/VERYSILENT', '/NORESTART', '/TASKS=!desktopicon')
         FallbackArgs = @('/S')
     },
     @{
@@ -72,10 +94,15 @@ $apps = @(
         Url          = 'https://github.com/catchem88/mithen-zip/releases/latest/download/MithenZip-setup.exe'
         File         = 'MithenZip-setup.exe'
         Args         = @('/s')
-        FallbackArgs = @('/S')
+        FallbackArgs = @('/S', '/VERYSILENT', '/NORESTART')
     }
 )
 
 foreach ($app in $apps) {
-    Install-MithenApp -Name $app.Name -Url $app.Url -File $app.File -Args $app.Args -FallbackArgs $app.FallbackArgs
+    Install-MithenApp -Name $app.Name -Url $app.Url -File $app.File -SilentArgs $app.Args -FallbackArgs $app.FallbackArgs
+}
+
+# No desktop icons
+foreach ($desktop in @((Join-Path $env:PUBLIC 'Desktop'), (Join-Path $env:USERPROFILE 'Desktop'))) {
+    Get-ChildItem -Path $desktop -Filter 'Mithen*.lnk' -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
 }

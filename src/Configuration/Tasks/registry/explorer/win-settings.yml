@@ -171,13 +171,11 @@ actions:
     value: 'EnableTransparency'
     type: REG_DWORD
     data: '0'
-    option: 'configure-te'
   - !registryValue:
     path: 'HKCU\Control Panel\Desktop\WindowMetrics'
     value: 'MinAnimate'
     type: REG_SZ
     data: '0'
-    option: 'configure-te'
 
   # ======> Start
   # === Show suggestions occasionally in Start - Off
@@ -204,15 +202,14 @@ actions:
     args: 'registry hide-page --value "crossdevice"'
     wait: true
     runas: currentUserElevated
-    option: "remove-appx-yourphone"
 
   # Reliable method to prevent CrossDeviceResume from running
   # Discovered by https://github.com/catchem88/ 
-  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell\ShellUIHosts\CrossDeviceResumeHost', value: 'ProcessPath', type: REG_SZ, data: '%SystemRoot%\system32\ShellHost.exe', option: "remove-appx-yourphone"} 
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell\ShellUIHosts\CrossDeviceResumeHost', value: 'ProcessPath', type: REG_SZ, data: '%SystemRoot%\system32\ShellHost.exe'} 
 
   # ---> Following registries only prevent enabling Cross Device Resume in Settings:
-  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\CrossDeviceResume\Configuration', value: 'IsResumeAllowed', type: REG_DWORD, data: '0', option: "remove-appx-yourphone"}
-  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\PolicyManager\default\Connectivity\DisableCrossDeviceResume', value: 'value', type: REG_DWORD, data: '1', option: "remove-appx-yourphone"}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\CrossDeviceResume\Configuration', value: 'IsResumeAllowed', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\PolicyManager\default\Connectivity\DisableCrossDeviceResume', value: 'value', type: REG_DWORD, data: '1'}
 
   # ================
   # === Accounts ===
@@ -278,7 +275,6 @@ actions:
   # ======> Game bar
 
   # === Record game clips, screenshots and broadcast using Game bar - Off
-  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR', value: 'AppCaptureEnabled', type: REG_DWORD, data: '0', option: 'remove-appx-xbox'}
   - !registryValue: {path: 'HKCU\System\GameConfigStore', value: 'GameDVR_Enabled', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKU\.DEFAULT\System\GameConfigStore', value: 'GameDVR_Enabled', type: REG_DWORD, data: '0'}
 

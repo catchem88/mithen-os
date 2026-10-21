@@ -60,7 +60,6 @@ actions:
 
   - !writeStatus: {status: "Removing Photos"}
   - !powerShell:
-    option: "remove-appx-photos"
     wait: true
     exeDir: true
     errorAction: Ignore
@@ -68,9 +67,8 @@ actions:
     command: >-
       & (Join-Path $env:ProgramFiles 'MithenTool\mithentool.exe') appx --all-users --remove 'Microsoft.Windows.Photos'
 
-  - !writeStatus: {status: "Removing Dev Home", option: "remove-appx-devhome"}
+  - !writeStatus: {status: "Removing Dev Home"}
   - !powerShell:
-    option: "remove-appx-devhome"
     wait: true
     exeDir: true
     errorAction: Ignore
@@ -78,9 +76,8 @@ actions:
     command: >-
       & (Join-Path $env:ProgramFiles 'MithenTool\mithentool.exe') appx --all-users --remove 'Microsoft.Windows.DevHome'
 
-  - !writeStatus: {status: "Removing Your Phone", option: "remove-appx-yourphone"}
+  - !writeStatus: {status: "Removing Your Phone"}
   - !powerShell:
-    option: "remove-appx-yourphone"
     wait: true
     exeDir: true
     errorAction: Ignore

@@ -20,7 +20,8 @@ function Update-Feature {
         if ($bool) {
             Enable-WindowsOptionalFeature -Online -FeatureName $featureName -NoRestart -All
         } else {
-            Disable-WindowsOptionalFeature -Online -FeatureName $featureName -NoRestart
+            # -Remove deletes the feature payload so it no longer appears in Windows Features
+            Disable-WindowsOptionalFeature -Online -FeatureName $featureName -NoRestart -Remove
         }
     }
 }

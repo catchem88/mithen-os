@@ -91,11 +91,8 @@ actions:
 
 
   # === Disable Taskbar Animations. (prevents the pop up windows in the taskbar from getting stuck too)
-  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', type: REG_DWORD, data: '0', option: 'configure-explorer-taskbar-animations'}
-  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', type: REG_DWORD, data: '0', option: 'configure-explorer-taskbar-animations'}
-  
-  - !registryValue: { path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', operation: delete, option: '!configure-explorer-taskbar-animations' }
-  - !registryValue: { path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', operation: delete, option: '!configure-explorer-taskbar-animations' }
+  - !registryValue: { path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', operation: delete }
+  - !registryValue: { path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'TaskbarAnimations', operation: delete }
 
   # === Allow Windows Ink Workspace - Enabled (On, but disallow access above lock)
   # ------> https://admx.help/?Category=Windows_11_2022&Policy=Microsoft.Policies.WindowsInkWorkspace::AllowSuggestedAppsInWindowsInkWorkspace
@@ -107,14 +104,45 @@ actions:
   # === 'Show recommendations for tips, shortcuts, new apps, and more' - Disabled
   - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_IrisRecommendations', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_IrisRecommendations', type: REG_DWORD, data: '0'}
+  # === Desktop icons - Small
+  # ------> 32 = Small, 48 = Medium (default), 96 = Large
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\Shell\Bags\1\Desktop', value: 'IconSize', type: REG_DWORD, data: '32'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\Shell\Bags\1\Desktop', value: 'Mode', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\Shell\Bags\1\Desktop', value: 'LogicalViewMode', type: REG_DWORD, data: '3'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\Shell\Bags\1\Desktop', value: 'IconSize', type: REG_DWORD, data: '32'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\Shell\Bags\1\Desktop', value: 'Mode', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\Shell\Bags\1\Desktop', value: 'LogicalViewMode', type: REG_DWORD, data: '3'}
   # === Start menu - recently added apps, recent items/jump lists, account notifications - Disabled
   - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_TrackProgs', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_TrackProgs', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_AccountNotifications', type: REG_DWORD, data: '0'}
   - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_AccountNotifications', type: REG_DWORD, data: '0'}
-  # ------> Start menu layout - List
-  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_Layout', type: REG_DWORD, data: '1'}
-  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_Layout', type: REG_DWORD, data: '1'}
+  # === Start menu layout - List (0 = Category, 1 = Grid, 2 = List)
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Start', value: 'AllAppsViewMode', type: REG_DWORD, data: '2'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Start', value: 'AllAppsViewMode', type: REG_DWORD, data: '2'}
+
+  # === Start > Show recommended files in Start, recent files in File Explorer,
+  # === and items in Jump Lists - Disabled
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_TrackDocs', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced', value: 'Start_TrackDocs', type: REG_DWORD, data: '0'}
+
+  # === Start > Show recently added apps - Disabled
+  # ------> This is the value the Settings toggle reads; Start_TrackProgs is not it
+  - !registryValue: {path: 'HKCU\Software\Microsoft\Windows\CurrentVersion\Start', value: 'ShowRecentList', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Start', value: 'ShowRecentList', type: REG_DWORD, data: '0'}
+
+  # === Start > Folders - Settings and File Explorer shown
+  # ------> The list is a REG_BINARY blob of place GUIDs (there is no per-folder
+  # ------> DWORD); these bytes were captured with exactly those two switched on.
+  # ------> reg.exe is used because a provider write is not dependable in a
+  # ------> non-interactive session.
+  - !cmd:
+    exeDir: true
+    ignoreErrors: true
+    weight: 20
+    command: >-
+      reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Start" /v VisiblePlaces /t REG_BINARY /d 86087352AA5143429F7B2776584659D4BC248A140CD68942A0806ED9BBA24882 /f &
+      reg add "HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Start" /v VisiblePlaces /t REG_BINARY /d 86087352AA5143429F7B2776584659D4BC248A140CD68942A0806ED9BBA24882 /f
 
   # === 'Recommended section' in Start - Removed (policy; more durable than the per-user value above)
   # ------> WinUtil "Start Menu Recommendations"

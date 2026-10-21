@@ -59,13 +59,50 @@ actions:
   - !run:
     exeDir: true
     exe: "STARTMENU.cmd"
-    option: "remove-pinned-items-startmenu"
     weight: 100
+
+  # ------> Rewrites the pinned list with only the apps that actually installed
+  # ------> and clears the Start pinning state so the layout is actually read
+  - !run:
+    exeDir: true
+    exe: "PowerShell"
+    args: '-NoP -ExecutionPolicy Bypass -File PINNED.ps1'
+    wait: true
+    errorAction: Log
+    runas: currentUserElevated
+    weight: 110
+
+  # ------> Pins via the ConfigureStartPins policy: a layout file is only read when
+  # ------> Windows creates a profile, and AME applies inside an existing session.
+  # ------> The RunOnce removes the policy at the first sign-in so the pins stay but
+  # ------> the user gets their Start menu back.
+  - !run:
+    exeDir: true
+    exe: "PowerShell"
+    args: '-NoP -ExecutionPolicy Bypass -File PINS.ps1'
+    wait: true
+    errorAction: Log
+    weight: 112
+
+  - !registryValue:
+    path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce'
+    value: 'MithenPins'
+    type: REG_SZ
+    data: 'powershell -NoP -ExecutionPolicy Bypass -File "%SystemRoot%\Web\Wallpaper\MithenOS\PINSONCE.ps1"'
+
+  # ------> Start folders, written again here so it wins over the Start cache
+  # ------> that STARTMENU.cmd just cleared
+  - !cmd:
+    exeDir: true
+    ignoreErrors: true
+    weight: 111
+    command: >-
+      reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Start" /v VisiblePlaces /t REG_BINARY /d 86087352AA5143429F7B2776584659D4BC248A140CD68942A0806ED9BBA24882 /f &
+      reg add "HKU\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\Start" /v VisiblePlaces /t REG_BINARY /d 86087352AA5143429F7B2776584659D4BC248A140CD68942A0806ED9BBA24882 /f
 
   - !run:
     exeDir: true
     exe: "FILEASSOC.cmd"
-    option: "remove-appx-photos"
     weight: 150
 
   # Mithen associations run after the photos fallback; FILEASSOC.cmd picks the ProgIds at runtime
@@ -73,7 +110,6 @@ actions:
     exeDir: true
     exe: "FILEASSOC.cmd"
     args: "mithen"
-    option: "install-mithen-apps"
     weight: 160
 
   # === Solid black desktop and lock screen (no wallpaper images are shipped)
@@ -81,43 +117,36 @@ actions:
     command: '.\BLACKSCREEN.ps1'
     exeDir: true
     runas: currentUserElevated
-    option: "configure-wallpaper"
 
   - !powerShell:
-    command: 'New-Item -ItemType Directory -Force -Path "$env:systemroot\Web\Wallpaper\MithenOS" | Out-Null; Copy-Item -Path .\BLACKSCREEN.ps1 -Destination "$env:systemroot\Web\Wallpaper\MithenOS" -Force'
+    command: 'New-Item -ItemType Directory -Force -Path "$env:systemroot\Web\Wallpaper\MithenOS" | Out-Null; Copy-Item -Path .\BLACKSCREEN.ps1 -Destination "$env:systemroot\Web\Wallpaper\MithenOS" -Force; Copy-Item -Path .\PINSONCE.ps1 -Destination "$env:systemroot\Web\Wallpaper\MithenOS" -Force'
     exeDir: true
-    option: "configure-wallpaper"
 
   # === Themes
-
-  - !powerShell:
-    command: '.\\Set-Theme.ps1 -Path (Join-Path $env:SystemRoot "Resources\\Themes\\dark.theme")'
-    exeDir: true
-    runas: currentUserElevated
-    option: "!configure-wallpaper"
-    options: ["configure-darkmode"]
-
-  - !powerShell:
-    command: ".\\Set-Theme.ps1 -New @{ WallpaperPath = (Join-Path $env:SystemRoot 'Web\\Wallpaper\\MithenOS\\black.jpg'); ThemeExportPath = (Join-Path $env:SystemRoot 'Resources\\Themes\\mithen.theme'); SystemMode = 'Light'; AppMode = 'Light' }"
-    exeDir: true
-    runas: currentUserElevated
-    option: "!configure-darkmode"
-    options: ["configure-wallpaper"]
 
   - !powerShell:
     command: ".\\Set-Theme.ps1 -New @{ WallpaperPath = (Join-Path $env:SystemRoot 'Web\\Wallpaper\\MithenOS\\black.jpg'); ThemeExportPath = (Join-Path $env:SystemRoot 'Resources\\Themes\\mithen.theme'); SystemMode = 'Dark'; AppMode = 'Dark' }"
     exeDir: true
     runas: currentUserElevated
-    option: "configure-darkmode"
-    options: ["configure-wallpaper"]
 
 
   # Still necessary to set for W10
   ## if dark mode is deselected, then revert to light mode
-  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize', value: 'AppsUseLightTheme', type: REG_DWORD, data: '0', option: "configure-darkmode", weight: 70}
-  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize', value: 'SystemUsesLightTheme', type: REG_DWORD, data: '0', option: "configure-darkmode", weight: 50}
-  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize', value: 'AppsUseLightTheme', type: REG_DWORD, data: '1', option: "!configure-darkmode", weight: 70}
-  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize', value: 'SystemUsesLightTheme', type: REG_DWORD, data: '1', option: "!configure-darkmode", weight: 50}
+  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize', value: 'AppsUseLightTheme', type: REG_DWORD, data: '0', weight: 70}
+  - !registryValue: {path: 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize', value: 'SystemUsesLightTheme', type: REG_DWORD, data: '0', weight: 50}
+  # === Sound Scheme -> "No Sounds"
+  # ------> Must run AFTER the theme steps: the base theme carries the Windows
+  # ------> Default sound scheme, so applying it would restore every event sound.
+  # ------> SOUNDS.ps1 writes the value Windows really reads for each event, the
+  # ------> default value of its .Current subkey.
+  - !run:
+    exeDir: true
+    exe: "PowerShell"
+    args: '-NoP -ExecutionPolicy Bypass -File SOUNDS.ps1'
+    wait: true
+    errorAction: Log
+    runas: currentUserElevated
+    weight: 20
 
 
   - !registryValue: 
@@ -126,11 +155,10 @@ actions:
     type: REG_SZ
     oobe: only
     data: 'powershell -NoP -ExecutionPolicy Bypass -File "%SystemRoot%\Web\Wallpaper\MithenOS\BLACKSCREEN.ps1"'
-    option: "configure-wallpaper"
     
   # Necessary to refresh start menu entries etc.
   - !appx: {operation: clearCache, name: '*Client.CBS*'}
-  - !appx: {operation: clearCache, name: '*StartMenuExperienceHost*', option: "remove-pinned-items-startmenu"}
+  - !appx: {operation: clearCache, name: '*StartMenuExperienceHost*'}
   - !appx: {operation: clearCache, name: '*Windows.Search*'}
   - !appx: {operation: clearCache, name: '*TCUI*'}
 
@@ -154,3 +182,13 @@ actions:
       }
       Start-Process explorer
     runas: currentUserElevated
+
+  # ------> Prints what actually landed, so the apply log is self-explanatory
+  - !run:
+    exeDir: true
+    exe: "PowerShell"
+    args: '-NoP -ExecutionPolicy Bypass -File VERIFY.ps1'
+    wait: true
+    errorAction: Log
+    runas: currentUserElevated
+    weight: 5

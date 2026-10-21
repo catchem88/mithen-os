@@ -45,10 +45,25 @@ Get-EventLog -LogName * | ForEach-Object { Clear-EventLog $_.Log }
 Write-Host "Disabling Reserved Storage"
 Set-WindowsReservedStorageState -State Disabled
 
-Stop-Service -Name "bits" -Force | Out-Null
-Stop-Service -Name "appidsvc" -Force | Out-Null
-Stop-Service -Name "dps" -Force | Out-Null
-Stop-Service -Name "wuauserv" -Force | Out-Null
+# Stop-Service waits forever for a service that cannot stop (dps on a disabled service),
+# so the stops below are bounded instead
+function Stop-SvcBounded {
+    param([string]$Name)
+
+    try {
+        $service = New-Object System.ServiceProcess.ServiceController $Name
+        if ($service.Status -ne [System.ServiceProcess.ServiceControllerStatus]::Stopped) {
+            $service.Stop()
+            [void]$service.WaitForStatus([System.ServiceProcess.ServiceControllerStatus]::Stopped, [TimeSpan]::FromSeconds(20))
+        }
+    }
+    catch {
+    }
+}
+
+foreach ($serviceName in @("bits", "appidsvc", "dps", "wuauserv")) {
+    Stop-SvcBounded -Name $serviceName
+}
 # Stop-Service -Name "cryptsvc" -Force | Out-Null # Intermittent issues stopping this service
 
 Write-Host "Cleaning up leftovers"

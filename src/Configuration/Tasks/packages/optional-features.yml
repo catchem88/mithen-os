@@ -4,8 +4,12 @@ description: Configures Windows optional features
 privilege: TrustedInstaller
 actions:
   - !writeStatus: {status: "Configuring features"}
-  - !powerShell:
+  # ------> 'DISM-FEATURES.ps1' as a bare command is not runnable, it has to be
+  # ------> launched with -File like the other scripts
+  - !run:
     exeDir: true
-    errorAction: Ignore
+    exe: "PowerShell"
+    args: '-NoP -ExecutionPolicy Bypass -File DISM-FEATURES.ps1'
+    wait: true
+    errorAction: Log
     weight: 100
-    command: 'DISM-FEATURES.ps1'
