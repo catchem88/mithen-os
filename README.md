@@ -39,11 +39,11 @@ MithenOS is a lightweight, privacy and performance focused customization of Wind
 * Every applied change is visible and re-applicable from the MithenTool System Monitor.
 * No bundled third-party tooling beyond the Mithen apps and the MithenTool.
 
+## Support and Sponsor the OG creator!
+[ReviOS](https://github.com/meetrevision/playbook) & [AtlasOS](https://github.com/Atlas-OS/Atlas)
+
 ## Credits
 * [ReviOS](https://github.com/meetrevision/playbook) - the playbook this project is forked from.
 * [AtlasOS](https://github.com/Atlas-OS/Atlas) - selected tweaks (visual effects, Xbox App removal, long paths).
 * [ChrisTitusTech WinUtil](https://github.com/ChrisTitusTech/winutil) - tweak values and the Windows Update profile.
 * [Ruddernation-Designs](https://github.com/Ruddernation-Designs/Adobe-URL-Block-List) - the Adobe hosts block list.
-
-## License
-MithenOS Playbook is licensed under [Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/).
