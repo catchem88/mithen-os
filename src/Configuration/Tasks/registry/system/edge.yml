@@ -22,6 +22,15 @@ actions:
   - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge\ExtensionSettings', value: '1', operation: delete}
   - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge\ExtensionSettings', value: 'cimighlppcgcoapaliogpjjdehbnof', operation: delete}
 
+  # === Copilot in Edge - Disabled
+  # ------> The sidebar hosts Copilot, page-context access feeds it page content,
+  # ------> and Compose is the inline AI writing feature.
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'HubsSidebarEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'CopilotPageContext', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'CopilotCDPPageContext', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'DiscoverPageContextEnabled', type: REG_DWORD, data: '0'}
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'ComposeInlineEnabled', type: REG_DWORD, data: '0'}
+
   # === New tab page defaults - quick links, promoted links, content, widgets,
   # === feed and background all off
   - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Edge', value: 'NewTabPageQuickLinksEnabled', type: REG_DWORD, data: '0'}
