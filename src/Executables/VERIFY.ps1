@@ -88,6 +88,19 @@ foreach ($binary in @('SnippingTool.exe', 'win32calc.exe')) {
     }
 }
 
+# Optional features whose exact names vary between builds - print what this image
+# actually carries so the removal list can be corrected if a name is wrong.
+try {
+    $features = Get-WindowsOptionalFeature -Online -ErrorAction Stop |
+        Where-Object { $_.FeatureName -match 'Math|LA57|Internet-Explorer|MediaPlayer|WorkFolders|MediaPlayback|FaxServices' }
+    foreach ($feature in $features) {
+        Say ('Feature {0}: {1}' -f $feature.FeatureName, $feature.State)
+    }
+}
+catch {
+    Say 'Feature list: needs elevation, skipped'
+}
+
 foreach ($browser in @(@('Edge', 'HKLM:\SOFTWARE\Policies\Microsoft\Edge'), @('Chrome', 'HKLM:\SOFTWARE\Policies\Google\Chrome'))) {
     $name = $browser[0]
     $root = $browser[1]

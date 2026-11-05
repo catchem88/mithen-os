@@ -85,3 +85,6 @@ actions:
   # === Disable Windows Upgrade notice
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings', value: 'HideMCTLink', type: REG_DWORD, data: '1'}
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings', value: 'RestartNotificationsAllowed2', type: REG_DWORD, data: '0'}
+
+  # === Do not offer the Malicious Software Removal Tool through Windows Update - Enabled
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\MRT', value: 'DontOfferThroughWUAU', type: REG_DWORD, data: '1'}

@@ -69,3 +69,5 @@ actions:
   # == condrv - Automatic
   # -----> #184 This is not MithenOS related, but setting to Automatic fixes error 3489660986 (0xd000003a)
   - !service: {name: 'condrv', operation: change, startup: 2} 
+  # == dmwappushservice (WAP push message routing, telemetry path) - Disabled
+  - !service: {name: 'dmwappushservice', operation: change, startup: 4}

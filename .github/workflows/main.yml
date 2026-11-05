@@ -68,6 +68,23 @@ jobs:
           release_name: MithenOS Playbook v${{ env.VERSION }}
           prerelease: false # Always set to false
           body: |
+            # MithenOS Playbook v${{ env.VERSION }}
+
+            Parity pass against the tiny11 builder, plus the removals you asked for by name.
+
+            ## Added
+
+            - **Apps removed**: Sound Recorder, Wallet, the Copilot app payload, the Office push-notification helper, Dolby Access, the Dolby Digital Plus decoder and Intel Management and Security Status.
+            - **Feature-on-Demand packages removed**: Internet Explorer, LA57 support, Tablet PC Math, Steps Recorder and the **handwriting** language features (OCR, speech and text-to-speech are kept).
+            - **Windows Copilot is blocked by policy**, not just hidden - alongside Edge's Copilot sidebar, page-context and Compose policies.
+            - **Microsoft push-to-install** of Store apps is blocked, MRT offers through Windows Update are blocked, and consumer account-state content is off.
+            - **Teams** can no longer install itself again, and the **new Outlook** can no longer run or reinstall.
+            - **`dmwappushservice`** is disabled and the Application Experience **`ProgramDataUpdater`** task is disabled.
+
+            ## MithenTool
+
+            The bundled MithenTool ships a matching System Monitor: a new **Packages** group for Feature-on-Demand packages, 24 new checks covering everything above (108 in total), and a **Fix all** button on every group that skips what is already applied.
+
             # Download Link ✨
 
             If you would like to support Mithen, kindly download the Playbook from the provided link below.

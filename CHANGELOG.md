@@ -2,6 +2,24 @@
 
 All notable changes to the MithenOS playbook. This file starts at 1.1.0 - earlier builds were released without a changelog.
 
+## [1.1.1] - 2026-11-05
+
+Parity pass against the tiny11 builder, plus the removals you asked for by name.
+
+### Added
+
+- **Apps removed**: Sound Recorder, Wallet, the Copilot app payload (`Microsoft.Windows.Copilot`), the Office push-notification helper, Dolby Access, the Dolby Digital Plus decoder, and Intel Management and Security Status.
+- **Feature-on-Demand packages removed online**: Internet Explorer, LA57 support, Tablet PC Math, Steps Recorder and the **handwriting** language features (OCR, speech and text-to-speech are kept).
+- **Windows Copilot** is blocked by policy (`TurnOffWindowsCopilot`), not merely hidden - alongside Edge's Copilot sidebar, page-context and Compose policies.
+- **Microsoft push-to-install** of Store apps is blocked, MRT offers through Windows Update are blocked, and consumer account-state content is off.
+- **Teams** can no longer install itself again, and the **new Outlook** can no longer run or reinstall.
+- **`dmwappushservice`** is disabled and the Application Experience **`ProgramDataUpdater`** task is disabled.
+- **MithenTool's System Monitor** now covers all of the above: a new "Packages" check kind (Feature-on-Demand packages), plus the new app, registry, service and task checks.
+
+### Changed
+
+- Playbook version **1.1.1**; the artifact is `MithenOS_Playbook_v1.1.1.apbx`.
+
 ## [1.1.0] - 2026-10-21
 
 A pass over the whole configuration: one fixed, non-interactive setup, far fewer silent failures, and the Start menu / sound / taskbar work that previously did nothing now actually lands on the installed system.

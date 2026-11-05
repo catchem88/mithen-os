@@ -47,3 +47,8 @@ actions:
 
   # === Turn off cloud optimized content - Enabled
   - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent', value: 'DisableCloudOptimizedContent', type: REG_DWORD, data: '1'}
+  # === Turn off consumer account state content - Enabled
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent', value: 'DisableConsumerAccountStateContent', type: REG_DWORD, data: '1'}
+
+  # === Prevent Microsoft from pushing Store apps to this device - Enabled
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\PushToInstall', value: 'DisablePushToInstall', type: REG_DWORD, data: '1'}

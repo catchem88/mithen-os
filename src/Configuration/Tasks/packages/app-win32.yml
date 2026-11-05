@@ -64,3 +64,8 @@ actions:
 
   # === Prevent automatic Teams installation
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications', value: 'ConfigureChatAutoInstall', type: REG_DWORD, data: '0'}
+  # === Prevent Teams from installing itself again - Enabled
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Teams', value: 'DisableInstallation', type: REG_DWORD, data: '1'}
+
+  # === Prevent the new Outlook app from running and reinstalling - Enabled
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Mail', value: 'PreventRun', type: REG_DWORD, data: '1'}

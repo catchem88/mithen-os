@@ -53,7 +53,14 @@ actions:
         'Microsoft.Advertising',
         'MixedReality.Portal',
         'Microsoft.MSPaint', # Paint 3D
-        'Microsoft.StartExperiencesApp'
+        'Microsoft.StartExperiencesApp',
+        'Microsoft.WindowsSoundRecorder',
+        'Microsoft.Wallet',
+        'Microsoft.Windows.Copilot',
+        'Microsoft.OfficePushNotificationUtility',
+        'DolbyLaboratories.DolbyAccess',
+        'DolbyLaboratories.DolbyDigitalPlusDecoderOEM',
+        'AppUp.IntelManagementandSecurityStatus'
         );
         
         & (Join-Path $env:ProgramFiles 'MithenTool\mithentool.exe') appx --all-users --remove ($packages -join ',')

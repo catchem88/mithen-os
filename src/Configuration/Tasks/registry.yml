@@ -32,6 +32,7 @@ actions:
   - !task: {path: 'Tasks\registry\privacy\cdm.yml'}
   - !task: {path: 'Tasks\registry\privacy\ceip.yml'}
   - !task: {path: 'Tasks\registry\privacy\cloud-content.yml'}
+  - !task: {path: 'Tasks\registry\privacy\copilot.yml'}
   - !task: {path: 'Tasks\registry\privacy\telemetry.yml'}
   - !task: {path: 'Tasks\registry\privacy\wer.yml'}
 

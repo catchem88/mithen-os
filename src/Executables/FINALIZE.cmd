@@ -1,5 +1,5 @@
 @echo off
-set version=1.1.0
+set version=1.1.1
 for /f "tokens=3" %%i in ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "CurrentBuild"') do set "build=%%i"
 if %build% gtr 19045 ( set "w11=true" )
 
@@ -38,6 +38,7 @@ schtasks /change /tn "\Microsoft\Windows\Windows Error Reporting\QueueReporting"
 schtasks /change /tn "\Microsoft\Windows\Application Experience\AitAgent" /disable >NUL 2>nul
 schtasks /change /tn "\Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" /disable >NUL 2>nul
 schtasks /change /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /disable >NUL 2>nul
+schtasks /change /tn "\Microsoft\Windows\Application Experience\ProgramDataUpdater" /disable >NUL 2>nul
 schtasks /change /tn "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator" /disable >NUL 2>nul
 schtasks /change /tn "\Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /disable >NUL 2>nul
 schtasks /change /tn "\Microsoft\Windows\Customer Experience Improvement Program\KernelCeipTask" /disable >NUL 2>nul

@@ -40,7 +40,12 @@ $features = @(
     @{ Name = "WindowsMediaPlayer"; Bool = $false },
     @{ Name = "MediaPlayback"; Bool = $false },
     @{ Name = "FaxServicesClientPackage"; Bool = $false }
-	# @{ Name = "SmbDirect"; Bool = $false }
+    # ------> Below: names that only exist on some builds. The guard above skips
+    # ------> any feature the running image does not carry.
+    @{ Name = "Internet-Explorer-Optional-amd64"; Bool = $false }
+    @{ Name = "TabletPCMath"; Bool = $false }
+    @{ Name = "LA57Support"; Bool = $false }
+    # @{ Name = "SmbDirect"; Bool = $false }
 )
 foreach ($feature in $features) {
     Update-Feature -featureName $feature.Name -bool $feature.Bool
@@ -56,5 +61,34 @@ foreach ($capability in $capabilities) {
     if ($state -and $state.State -ne "NotPresent") {
         Write-Host "Removing $capability"
         Remove-WindowsCapability -Online -Name $capability -NoRestart | Out-Null
+    }
+}
+
+# These ship as Feature-on-Demand PACKAGES rather than optional features, so
+# Get-WindowsOptionalFeature never lists them (names taken from the tiny11 Core
+# builder, which removes the same packages offline).
+$packagesToRemove = @(
+    'Microsoft-Windows-InternetExplorer-Optional-Package',
+    'Microsoft-Windows-Kernel-LA57-FoD-Package',
+    'Microsoft-Windows-TabletPCMath-Package',
+    'Microsoft-Windows-StepsRecorder-Package',
+    # Handwriting only - OCR, speech and text-to-speech are left in place
+    'Microsoft-Windows-LanguageFeatures-Handwriting-'
+)
+
+$installedPackages = Get-WindowsPackage -Online -ErrorAction SilentlyContinue
+foreach ($pattern in $packagesToRemove) {
+    # Wrapper stubs are not removable on their own; the payload package carries them.
+    $matches = $installedPackages | Where-Object {
+        $_.PackageName -like "$pattern*" -and $_.PackageState -eq 'Installed' -and $_.PackageName -notlike '*-Wrapper*'
+    }
+    foreach ($package in $matches) {
+        Write-Host "Removing package $($package.PackageName)"
+        try {
+            Remove-WindowsPackage -Online -PackageName $package.PackageName -NoRestart -ErrorAction Stop | Out-Null
+        }
+        catch {
+            Write-Host "Could not remove $($package.PackageName): $($_.Exception.Message)"
+        }
     }
 }

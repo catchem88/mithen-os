@@ -1,0 +1,12 @@
+---
+title: Configure Privacy -> Copilot
+description: Turns off Windows Copilot
+privilege: TrustedInstaller
+actions:
+
+  # === Windows Copilot - Disabled
+  # ------> The Copilot packages are removed in packages/appx.yml and app-win32.yml;
+  # ------> this policy blocks the feature entry points as well.
+  - !registryValue: {path: 'HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot', value: 'TurnOffWindowsCopilot', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot', value: 'TurnOffWindowsCopilot', type: REG_DWORD, data: '1'}
+  - !registryValue: {path: 'HKU\.DEFAULT\Software\Policies\Microsoft\Windows\WindowsCopilot', value: 'TurnOffWindowsCopilot', type: REG_DWORD, data: '1'}
