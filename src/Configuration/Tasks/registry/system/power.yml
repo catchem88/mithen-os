@@ -29,6 +29,33 @@ actions:
   - !registryValue: {path: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', value: 'ShutdownWithoutLogon', type: REG_DWORD, data: '1'}
 
   # =========================
+  # === Disable network connectivity in standby - Laptops only
+  # =========================
+  # ------> Modern Standby keeps the adapter connected in S0 low-power idle, which drains the battery.
+  # ------> Desktops have nothing to disconnect, so the settings are only written when a battery is present.
+  # ------> Re-enable network in standby from MithenTool: Tweaks & Optimizations -> Utilities
+  - !powerShell:
+    command: |
+      $systemType = (Get-CimInstance -ClassName Win32_ComputerSystem -ErrorAction SilentlyContinue).PCSystemType
+      $battery = Get-CimInstance -ClassName Win32_Battery -ErrorAction SilentlyContinue
+      if(-not $battery -or $systemType -notin 2,8) {
+          Write-Output 'No battery detected - leaving standby network connectivity at the default'
+          return
+      }
+
+      $setting = '{f15576e8-98b7-4186-b944-eafa664402d9}'
+      foreach($root in @('HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings','HKCU:\Software\Policies\Microsoft\Power\PowerSettings')) {
+          $path = Join-Path $root $setting
+          if(-not (Test-Path -LiteralPath $path)) {
+              New-Item -Path $path -Force | Out-Null
+          }
+          New-ItemProperty -LiteralPath $path -Name 'ACSettingIndex' -Value 0 -PropertyType DWord -Force | Out-Null
+          New-ItemProperty -LiteralPath $path -Name 'DCSettingIndex' -Value 0 -PropertyType DWord -Force | Out-Null
+      }
+      Write-Output 'Battery detected - network connectivity in standby disabled'
+    runas: currentUserElevated
+
+  # =========================
   # === Usage reporting (battery health and data use) - Disabled
   # =========================
   - !registryValue: {path: 'HKLM\SYSTEM\ControlSet001\Control\Session Manager\Power', value: 'SleepStudyDisabled', type: REG_DWORD, data: '1'}

@@ -14,6 +14,7 @@ Parity pass against the tiny11 builder, plus the removals you asked for by name.
 - **Microsoft push-to-install** of Store apps is blocked, MRT offers through Windows Update are blocked, and consumer account-state content is off.
 - **Teams** can no longer install itself again, and the **new Outlook** can no longer run or reinstall.
 - **`dmwappushservice`** is disabled and the Application Experience **`ProgramDataUpdater`** task is disabled.
+- **Laptops only**: network connectivity in standby is **disabled** (power setting `f15576e8-…`, AC and DC) when a battery is detected, so Modern Standby stops draining the battery by staying connected. Desktops and non-battery systems are left at the Windows default. Runtime detection uses `Win32_ComputerSystem.PCSystemType` plus `Win32_Battery`.
 - **MithenTool's System Monitor** now covers all of the above: a new "Packages" check kind (Feature-on-Demand packages), plus the new app, registry, service and task checks.
 
 ### Changed
