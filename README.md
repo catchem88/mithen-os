@@ -19,7 +19,7 @@ MithenOS is a lightweight, privacy and performance focused customization of Wind
 * Redirects `.vbs`, `.scr` and `.pif` files to open in Notepad so they cannot be executed by double-click.
 * Keeps the Windows default power plan.
 * Removes the Microsoft Store automatically on LTSC editions.
-* Installs the Mithen apps (MithenView, MithenPDF, MithenPlayer, MithenMusic, MithenZip) and the MithenTool with its System Monitor tab.
+* Installs the Mithen apps (MithenView, MithenPDF, MithenPlayer, MithenMusic) and the MithenTool with its System Monitor tab.
 * Desktop and lock screen are set to plain black.
 
 ## Supported platforms
