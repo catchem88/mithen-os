@@ -59,7 +59,6 @@ function Install-MithenApp {
 #   MithenView   - NSIS (dist/scripts/installer.nsi)                 -> /S
 #   MithenPDF    - custom SumatraPDF-based (src/Installer.cpp)       -> -silent
 #   MithenPlayer - Inno Setup (distrib/mpc-be_setup.iss)             -> /VERYSILENT /NORESTART
-#   MithenZip    - custom 7-Zip-based (Installer/MithenZipSetup.cpp) -> /s
 $apps = @(
     @{
         Name         = 'MithenView'
@@ -88,13 +87,6 @@ $apps = @(
         File         = 'MithenMusic-setup.exe'
         Args         = @('/S')
         FallbackArgs = @('/VERYSILENT', '/NORESTART')
-    },
-    @{
-        Name         = 'MithenZip'
-        Url          = 'https://github.com/catchem88/mithen-zip/releases/latest/download/MithenZip-setup.exe'
-        File         = 'MithenZip-setup.exe'
-        Args         = @('/s')
-        FallbackArgs = @('/S', '/VERYSILENT', '/NORESTART')
     }
 )
 

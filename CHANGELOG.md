@@ -2,6 +2,21 @@
 
 All notable changes to the MithenOS playbook. This file starts at 1.1.0 - earlier builds were released without a changelog.
 
+## [1.2.0] - 2026-11-24
+
+7-Zip replaces the removed MithenZip as the archive handler.
+
+### Added
+
+- **7-Zip (latest x64)** is installed silently during the apply. The installer is the newest `7z<version>-x64.exe` from the official `github.com/ip7z/7zip` releases, with the `7-zip.org` URL as a fallback, and is started with `/S`.
+- **Archive formats open in 7-Zip**: `.7z`, `.zip`, `.rar`, `.tar`, `.gz`, `.bz2`, `.xz`, `.zst`, `.lzma`, `.cab`, `.tgz`, `.wim`, `.vhd`, `.vhdx`, `.dmg`, `.esd` and every other type 7-Zip registers are pointed at their `7-Zip.<ext>` ProgId for the machine and for each loaded user profile. Stale `UserChoice` keys are removed so the new handler actually takes effect, and `.iso` stays with Windows.
+- **Windows archive icon**: every `7-Zip.<ext>` ProgId uses `zipfldr.dll`, so archives keep the familiar zipped-folder icon instead of 7-Zip's per-format icons.
+- **7-Zip shell menu**: `HKCU\Software\7-Zip\Options\ContextMenu` is set to `4375` for each loaded user, which is exactly Extract files, Extract Here, Extract to "<folder>", Test archive, Add to archive and Add to "<name>.zip".
+
+### Changed
+
+- Playbook version **1.2.0**; the artifact is `MithenOS_Playbook_v1.2.0.apbx`.
+
 ## [1.1.1] - 2026-11-05
 
 Parity pass against the tiny11 builder, plus the removals you asked for by name.
@@ -15,6 +30,7 @@ Parity pass against the tiny11 builder, plus the removals you asked for by name.
 - **Teams** can no longer install itself again, and the **new Outlook** can no longer run or reinstall.
 - **`dmwappushservice`** is disabled and the Application Experience **`ProgramDataUpdater`** task is disabled.
 - **Laptops only**: network connectivity in standby is **disabled** (power setting `f15576e8-…`, AC and DC) when a battery is detected, so Modern Standby stops draining the battery by staying connected. Desktops and non-battery systems are left at the Windows default. Runtime detection uses `Win32_ComputerSystem.PCSystemType` plus `Win32_Battery`.
+- **MithenZip is no longer installed**: removed from the Mithen apps installer and from the default file associations (.zip, .7z, .rar, .tar, .gz, .bz2, .xz, .iso, .cab, .lzma, .zst, .tgz now use the Windows default handler).
 - **MithenTool's System Monitor** now covers all of the above: a new "Packages" check kind (Feature-on-Demand packages), plus the new app, registry, service and task checks.
 
 ### Changed

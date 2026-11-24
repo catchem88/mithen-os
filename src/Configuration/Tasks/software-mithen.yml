@@ -1,6 +1,6 @@
 ---
 title: Mithen Apps
-description: Installs the Mithen apps (View, PDF, Player, Zip)
+description: Installs the Mithen apps (View, PDF, Player, Music)
 privilege: TrustedInstaller
 actions:
 

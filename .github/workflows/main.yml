@@ -70,20 +70,18 @@ jobs:
           body: |
             # MithenOS Playbook v${{ env.VERSION }}
 
-            Parity pass against the tiny11 builder, plus the removals you asked for by name.
+            7-Zip replaces the removed MithenZip as the archive handler.
 
             ## Added
 
-            - **Apps removed**: Sound Recorder, Wallet, the Copilot app payload, the Office push-notification helper, Dolby Access, the Dolby Digital Plus decoder and Intel Management and Security Status.
-            - **Feature-on-Demand packages removed**: Internet Explorer, LA57 support, Tablet PC Math, Steps Recorder and the **handwriting** language features (OCR, speech and text-to-speech are kept).
-            - **Windows Copilot is blocked by policy**, not just hidden - alongside Edge's Copilot sidebar, page-context and Compose policies.
-            - **Microsoft push-to-install** of Store apps is blocked, MRT offers through Windows Update are blocked, and consumer account-state content is off.
-            - **Teams** can no longer install itself again, and the **new Outlook** can no longer run or reinstall.
-            - **`dmwappushservice`** is disabled and the Application Experience **`ProgramDataUpdater`** task is disabled.
+            - **7-Zip (latest x64) is installed** silently during the apply: the newest `7z<version>-x64.exe` from `github.com/ip7z/7zip` releases (7-zip.org URL as fallback), run with `/S`.
+            - **Archive formats open in 7-Zip** - `.7z`, `.zip`, `.rar`, `.tar`, `.gz`, `.bz2`, `.xz`, `.zst`, `.lzma`, `.cab`, `.tgz`, `.wim`, `.vhd`, `.vhdx`, `.dmg`, `.esd` and every other type 7-Zip registers are pointed at their `7-Zip.<ext>` ProgId, for the machine and for each loaded user profile. Stale `UserChoice` keys are removed so the handler takes effect; `.iso` stays with Windows.
+            - **Windows archive icon** - every `7-Zip.<ext>` ProgId uses `zipfldr.dll`, so archives keep the familiar zipped-folder icon.
+            - **7-Zip shell menu** - `HKCU\Software\7-Zip\Options\ContextMenu = 4375`, which is exactly Extract files, Extract Here, Extract to "<folder>", Test archive, Add to archive and Add to "<name>.zip".
 
             ## MithenTool
 
-            The bundled MithenTool ships a matching System Monitor: a new **Packages** group for Feature-on-Demand packages, 24 new checks covering everything above (108 in total), and a **Fix all** button on every group that skips what is already applied.
+            The bundled MithenTool keeps the System Monitor that tracks everything the playbook removes, plus the Windows customizations page that ships the Windhawk mods offline.
 
             # Download Link ✨
 

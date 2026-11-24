@@ -36,6 +36,10 @@ actions:
   - !task: {path: 'Tasks\revert.yml'}
   - !task: {path: 'Tasks\final.yml'}
 
+  # 7-Zip is installed here so its associations and shell menu are in place before
+  # the Mithen apps run
+  - !task: {path: 'Tasks\software-7zip.yml'}
+
   # Mithen apps go last: their installers download and run one by one, and a slow or
   # stuck one should not hold up the rest of the configuration
   - !task: {path: 'Tasks\software-mithen.yml'}

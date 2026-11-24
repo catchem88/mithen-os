@@ -1,0 +1,32 @@
+---
+title: 7-Zip
+description: Installs the latest 7-Zip, points archive formats at it, and applies the archive icon and shell menu
+privilege: TrustedInstaller
+actions:
+
+  - !writeStatus: {status: 'Installing 7-Zip'}
+
+  # Latest x64 installer from github.com/ip7z/7zip, pinned URL as the fallback
+  - !run:
+    exeDir: true
+    exe: 'PowerShell'
+    args: '-NoP -ExecutionPolicy Bypass -File GET7ZIP.ps1'
+    wait: true
+    errorAction: Log
+    weight: 40
+
+  - !run:
+    exeDir: true
+    exe: '7z-installer-x64.exe'
+    args: '/S'
+    wait: true
+    errorAction: Log
+    weight: 100
+
+  - !run:
+    exeDir: true
+    exe: 'PowerShell'
+    args: '-NoP -ExecutionPolicy Bypass -File SEVENZIP.ps1'
+    wait: true
+    errorAction: Log
+    weight: 60
